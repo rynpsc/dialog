@@ -11,8 +11,8 @@
   "homepage": "https://github.com/rynpsc/dialog",
   "bugs": "https://github.com/rynpsc/dialog/issues",
   "repository": "github:rynpsc/dialog",
-  "main": "/dist/dialog.umd.js",
-  "module": "/dist/dialog.js",
+  "main": "dist/dialog.umd.js",
+  "module": "dist/dialog.js",
   "scripts": {
     "build": "rollup --config",
     "watch": "rollup --config --watch"
