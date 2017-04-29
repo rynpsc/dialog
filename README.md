@@ -12,6 +12,7 @@ npm install --save @rynpsc/dialog
 ## Usage
 
 ```js
+import Dialog from '@rynspc/dialog';
 const dialog = Dialog('dialog', 'main', options);
 ```
 
@@ -23,7 +24,7 @@ const dialog = Dialog('dialog', 'main', options);
 	</div>
 
 	<div class="dialog" id="dialog">
-		<!-- dialog content -->
+		<!-- Dialog content -->
 	</div>
 
 </body>
@@ -31,7 +32,7 @@ const dialog = Dialog('dialog', 'main', options);
 
 Alternatively the dialog element can be placed within `#main` and the script will move the `#dialog` element outside.
 
-```css
+ ```css
 .dialog {
 	display: none;
 }
@@ -51,7 +52,7 @@ const defaults = {
 	// ID of an element containing dialogs description
 	description: '',
 	
-	// Element to focus on open, defaults to the first focusable element
+	// ID of element to focus on open, defaults to the first focusable element
 	focus: '',
 	
 	// Whether dialog is of type alertdialog
