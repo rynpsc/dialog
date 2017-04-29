@@ -1,7 +1,5 @@
 # Dialog
 
-> A simple, accessible libary for building dialogs.
-
 - Automatically handles adding and toggling the appropiate aria roles, states and properties.
 - Can be used as an accesible baseline for any dialog or dialog like like UI e.g lightbox's or fullscreen menus. 
 
