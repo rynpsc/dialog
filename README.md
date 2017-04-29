@@ -12,7 +12,7 @@ npm install --save @rynpsc/dialog
 ## Usage
 
 ```js
-import Dialog from '@rynspc/dialog';
+import Dialog from '@rynpsc/dialog';
 const dialog = Dialog('dialog', 'main', options);
 ```
 
