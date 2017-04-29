@@ -1,0 +1,27 @@
+{
+  "name": "@rynpsc/dialog",
+  "version": "1.0.0",
+  "description": "Modern, lightweight and accessible dialog with a focus on progressive enhancement",
+  "keywords": [
+    "dialog",
+    "modal",
+    "accessible"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/rynpsc/dialog",
+  "bugs": "https://github.com/rynpsc/dialog/issues",
+  "repository": "github:rynpsc/dialog",
+  "main": "/dist/dialog.umd.js",
+  "module": "/dist/dialog.js",
+  "scripts": {
+    "build": "rollup --config",
+    "watch": "rollup --config --watch"
+  },
+  "devDependencies": {
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.3.3",
+    "rollup": "^0.41.6",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-watch": "^3.2.2"
+  }
+}
