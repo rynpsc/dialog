@@ -5,22 +5,27 @@
 
 ## Install
 
+### Yarn
+
+```
+yarn add @rynpsc/dialog
+```
+
+### NPM
+
 ```
 npm install --save @rynpsc/dialog
 ```
 
 ## Usage
 
-```js
-import Dialog from '@rynpsc/dialog';
-const dialog = Dialog('dialog', 'main', options);
-```
+Dialog requires that the dialog element lives outside of the main page content.
 
 ```html
 <body>
 	
 	<div id="main">
-		<!-- Contains all other page content -->
+		<!-- All other page content -->
 	</div>
 
 	<div class="dialog" id="dialog">
@@ -30,7 +35,36 @@ const dialog = Dialog('dialog', 'main', options);
 </body>
 ```
 
-Alternatively the dialog element can be placed within `#main` and the script will move the `#dialog` element outside.
+Alternatively the dialog element can be placed within `#main` and the script will move the `#dialog` element outside of the `#main` element.
+
+```html
+<body>
+	
+	<div id="main">
+		<!-- All other page content -->
+		
+		<div class="dialog" id="dialog">
+			<!-- Dialog content -->
+		</div>
+
+	</div>
+
+</body>
+```
+
+The `Dialog` constructor takes three parameters:
+
+* `dialog` - The element ID of the dialog element
+* `main` - The element ID of the main page content
+* `options` - Configuration Object ([see options](#options))
+
+```js
+import Dialog from '@rynpsc/dialog';
+
+const dialog = Dialog(dialog, main, options);
+```
+
+Dialog does not provide and styling of its own, instead this is left to the user to implement.
 
  ```css
 .dialog {
@@ -45,45 +79,75 @@ Alternatively the dialog element can be placed within `#main` and the script wil
 ## Options
 
 ```js
-const defaults = {
+const dialog = Dialog('dialog', 'main', {
 	// String with label or element ID to use as label
 	label: 'Dialog',
 	
 	// ID of an element containing dialogs description
 	description: '',
 	
-	// ID of element to focus on open, defaults to the first focusable element
+	// Reference to HTMLElement to focus on open, defaults to the first focusable element
 	focus: '',
 	
 	// Whether dialog is of type alertdialog
 	alert: false,
+
+	// Callback on initialisation
+	onCreate: (dialog, main) => {},
 	
 	// Callback on open
-	onOpen: (modal, main) => {},
+	onOpen: (dialog, main) => {},
 	
 	// Callback on close
-	onClose: (modal, main) => {},
-};
+	onClose: (dialog, main) => {},
+
+	// Callback on destroy
+	onDestroy: (dialog, main) => {},
+});
 ```
 
+The callbacks , `onCreate`, `onOpen`, `onClose` and `onDestroy` each access to two parameters, `dialog` and `main` which reference the respective `HTMLElements`.
+
 ## API
+
+### open
 
 ```js
 dialog.open();
 ```
 
+### close
+
 ```js
 dialog.close();
 ```
 
+### toggle
+
 ```js
-dialog.toggle();
+dialog.toggle(force);
 ```
+
+If the optional `force` parameter evaluates to true, open the dialog, if false, close the dialog.
+
+### destroy
+
+Destroy the dialog. 
+
+```js
+dialog.destroy();
+```
+
+Note: If relying on the library to move the `dialog` element outsideof the `main` element the method does not currently restore the `dialog` element to it's previous DOM position.
+
+If the optional `force` parameter evaluates to true, open the dialog, if false, close the dialog.
 
 ```js
 dialog.isOpen;
 ```
 
+Returns a Boolean indicating if the dialog is currently open.
+
 ## License
 
-MIT &copy; 2017 [Ryan Pascoe](https://github.com/ryan-pascoe)
+MIT &copy; 2017 [Ryan Pascoe](https://github.com/rynpsc)
