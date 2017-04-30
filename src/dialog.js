@@ -117,6 +117,8 @@ function Dialog(modal, main, options) {
 		mainElement.removeAttribute('aria-hidden');
 		document.removeEventListener('keydown', onKeydown);
 		document.removeEventListener('focus', trapFocus, true);
+
+		if (typeof config.onDestroy === 'function') config.onDestroy(modalElement, mainElement);
 	}
 
 	create();

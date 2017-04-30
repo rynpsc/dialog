@@ -5,7 +5,8 @@ var defaults = {
 	alert: false,
 	onInit: function onInit(dialog, main) {},
 	onOpen: function onOpen(dialog, main) {},
-	onClose: function onClose(dialog, main) {}
+	onClose: function onClose(dialog, main) {},
+	onDestroy: function onDestroy(dialog, main) {}
 };
 
 /**
@@ -170,6 +171,8 @@ function Dialog(modal, main, options) {
 		mainElement.removeAttribute('aria-hidden');
 		document.removeEventListener('keydown', onKeydown);
 		document.removeEventListener('focus', trapFocus, true);
+
+		if (typeof config.onDestroy === 'function') config.onDestroy(modalElement, mainElement);
 	}
 
 	create();
