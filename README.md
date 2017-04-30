@@ -3,6 +3,8 @@
 - Automatically handles adding and toggling the appropiate aria roles, states and properties.
 - Can be used as an accesible baseline for any dialog or dialog like like UI e.g lightbox's or fullscreen menus. 
 
+[View demo on CodePen](https://codepen.io/rynpsc/pen/YVVGdr)
+
 ## Install
 
 ### Yarn
@@ -112,17 +114,23 @@ The callbacks , `onCreate`, `onOpen`, `onClose` and `onDestroy` each access to t
 
 ### open
 
+Open the dialog.
+
 ```js
 dialog.open();
 ```
 
 ### close
 
+Close the dialog.
+
 ```js
 dialog.close();
 ```
 
 ### toggle
+
+Toggle the dialog between open and close.
 
 ```js
 dialog.toggle(force);
@@ -140,13 +148,21 @@ dialog.destroy();
 
 Note: If relying on the library to move the `dialog` element outsideof the `main` element the method does not currently restore the `dialog` element to it's previous DOM position.
 
-If the optional `force` parameter evaluates to true, open the dialog, if false, close the dialog.
+### create
+
+Create the dialog after destroying it.
+
+```js
+dialog.create();
+```
+
+### isOpen
+
+Returns a Boolean indicating if the dialog is currently open.
 
 ```js
 dialog.isOpen;
 ```
-
-Returns a Boolean indicating if the dialog is currently open.
 
 ## License
 
