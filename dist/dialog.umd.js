@@ -9,7 +9,7 @@ var defaults = {
 	description: '',
 	focus: '',
 	alert: false,
-	onInit: function onInit(dialog, main) {},
+	onCreate: function onCreate(dialog, main) {},
 	onOpen: function onOpen(dialog, main) {},
 	onClose: function onClose(dialog, main) {},
 	onDestroy: function onDestroy(dialog, main) {}
@@ -92,7 +92,7 @@ function Dialog(modal, main, options) {
 			document.body.appendChild(modalElement);
 		}
 
-		if (typeof config.onInit === 'function') config.onInit(modalElement, mainElement);
+		if (typeof config.onCreate === 'function') config.onCreate(modalElement, mainElement);
 	}
 
 	function onKeydown(event) {

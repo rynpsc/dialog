@@ -36,7 +36,7 @@ function Dialog(modal, main, options) {
 			document.body.appendChild(modalElement);
 		}
 
-		if (typeof config.onInit === 'function') config.onInit(modalElement, mainElement);
+		if (typeof config.onCreate === 'function') config.onCreate(modalElement, mainElement);
 	}
 
 	function onKeydown(event) {

@@ -3,7 +3,7 @@ const defaults = {
 	description: '',
 	focus: '',
 	alert: false,
-	onInit: (dialog, main) => {},
+	onCreate: (dialog, main) => {},
 	onOpen: (dialog, main) => {},
 	onClose: (dialog, main) => {},
 	onDestroy: (dialog, main) => {},
