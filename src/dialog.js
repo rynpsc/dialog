@@ -35,6 +35,8 @@ function Dialog(modal, main, options) {
 		if (mainElement.contains(modalElement)) {
 			document.body.appendChild(modalElement);
 		}
+
+		if (typeof config.onInit === 'function') config.onInit(modalElement, mainElement);
 	}
 
 	function onKeydown(event) {

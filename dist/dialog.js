@@ -3,6 +3,7 @@ var defaults = {
 	description: '',
 	focus: '',
 	alert: false,
+	onInit: function onInit(modal, main) {},
 	onOpen: function onOpen(modal, main) {},
 	onClose: function onClose(modal, main) {}
 };
@@ -83,6 +84,8 @@ function Dialog(modal, main, options) {
 		if (mainElement.contains(modalElement)) {
 			document.body.appendChild(modalElement);
 		}
+
+		if (typeof config.onInit === 'function') config.onInit(modalElement, mainElement);
 	}
 
 	function onKeydown(event) {

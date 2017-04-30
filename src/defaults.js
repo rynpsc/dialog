@@ -3,6 +3,7 @@ const defaults = {
 	description: '',
 	focus: '',
 	alert: false,
+	onInit: (modal, main) => {},
 	onOpen: (modal, main) => {},
 	onClose: (modal, main) => {},
 };
