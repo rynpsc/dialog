@@ -3,9 +3,9 @@ const defaults = {
 	description: '',
 	focus: '',
 	alert: false,
-	onInit: (modal, main) => {},
-	onOpen: (modal, main) => {},
-	onClose: (modal, main) => {},
+	onInit: (dialog, main) => {},
+	onOpen: (dialog, main) => {},
+	onClose: (dialog, main) => {},
 };
 
 export default defaults;

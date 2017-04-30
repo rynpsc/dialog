@@ -9,9 +9,9 @@ var defaults = {
 	description: '',
 	focus: '',
 	alert: false,
-	onInit: function onInit(modal, main) {},
-	onOpen: function onOpen(modal, main) {},
-	onClose: function onClose(modal, main) {}
+	onInit: function onInit(dialog, main) {},
+	onOpen: function onOpen(dialog, main) {},
+	onClose: function onClose(dialog, main) {}
 };
 
 /**
