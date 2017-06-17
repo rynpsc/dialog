@@ -2,20 +2,23 @@ import defaults from './defaults';
 import * as Utils from './utils';
 
 function Dialog(modal, main, options) {
-
 	const mainElement = document.getElementById(main);
 	const modalElement = document.getElementById(modal);
-
-	if (!mainElement) throw new Error(`No element with the id "${main}"`);
-	if (!modalElement) throw new Error(`No element with the id "${modal}"`);
+	const config = Object.assign({}, defaults, options);
 
 	let isOpen = false;
 	let initialFocusedElement = null;
 
-	const config = Object.assign({}, defaults, options);
-	const role = config.alert ? 'alertdialog' : 'dialog';
+	if (!mainElement) {
+		throw new Error(`No element with the id "${main}"`);
+	}
+
+	if (!modalElement) {
+		throw new Error(`No element with the id "${modal}"`);
+	}
 
 	function create() {
+		const role = config.alert ? 'alertdialog' : 'dialog';
 
 		modalElement.setAttribute('role', role);
 		modalElement.setAttribute('tabindex', -1);
@@ -23,7 +26,6 @@ function Dialog(modal, main, options) {
 
 		toggleAriaHidden(isOpen);
 
-		// Label - if label matches an ID use that, otherwise interpret as a string
 		let matchesID = document.getElementById(config.label);
 		let attr = matchesID ? 'labeledby' : 'label';
 		modalElement.setAttribute(`aria-${attr}`, config.label);
@@ -36,12 +38,19 @@ function Dialog(modal, main, options) {
 			document.body.appendChild(modalElement);
 		}
 
-		if (typeof config.onCreate === 'function') config.onCreate(modalElement, mainElement);
+		if (typeof config.onCreate === 'function') {
+			config.onCreate(modalElement, mainElement);
+		}
 	}
 
 	function onKeydown(event) {
-		if (event.key === 'Escape' && isOpen) close();
-		if (event.key === 'Tab' && isOpen) Utils.trapTabKey(modalElement, event);
+		if (event.key === 'Escape' && isOpen) {
+			close();
+		}
+
+		if (event.key === 'Tab' && isOpen) {
+			Utils.trapTabKey(modalElement, event);
+		}
 	}
 
 	function trapFocus(event) {
@@ -81,7 +90,9 @@ function Dialog(modal, main, options) {
 		document.addEventListener('keydown', onKeydown);
 		document.addEventListener('focus', trapFocus, true);
 
-		if (typeof config.onOpen === 'function') config.onOpen(modalElement, mainElement);
+		if (typeof config.onOpen === 'function') {
+			config.onOpen(modalElement, mainElement);
+		}
 	}
 
 	function close() {
@@ -96,7 +107,9 @@ function Dialog(modal, main, options) {
 		initialFocusedElement.focus();
 		initialFocusedElement = null;
 
-		if (typeof config.onClose === 'function') config.onClose(modalElement, mainElement);
+		if (typeof config.onClose === 'function') {
+			config.onClose(modalElement, mainElement);
+		}
 	}
 
 	function toggle(toggle = !isOpen) {
@@ -111,14 +124,17 @@ function Dialog(modal, main, options) {
 	}
 
 	function destroy() {
-		let attrs = ['role', 'tabindex', 'aria-modal', 'aria-label', 'aria-labeledby', 'aria-describedby', 'aria-hidden'];
-		attrs.forEach(attr => modalElement.removeAttribute(attr));
+		let modalAttrs = [ 'aria-describedby', 'aria-hidden', 'aria-label', 'aria-labeledby', 'aria-modal', 'role', 'tabindex' ];
+
+		modalAttrs.forEach(attr => modalElement.removeAttribute(attr));
 
 		mainElement.removeAttribute('aria-hidden');
 		document.removeEventListener('keydown', onKeydown);
 		document.removeEventListener('focus', trapFocus, true);
 
-		if (typeof config.onDestroy === 'function') config.onDestroy(modalElement, mainElement);
+		if (typeof config.onDestroy === 'function') {
+			config.onDestroy(modalElement, mainElement);
+		}
 	}
 
 	create();
