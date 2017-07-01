@@ -7,6 +7,7 @@ function Dialog(modal, main, options) {
 	const config = Object.assign({}, defaults, options);
 
 	let isOpen = false;
+	let initiated = false;
 	let initialFocusedElement = null;
 
 	if (!mainElement) {
@@ -73,8 +74,9 @@ function Dialog(modal, main, options) {
 		}
 	}
 
+		initiated = true;
 	function open() {
-		if (isOpen) return;
+		if (isOpen || !initiated) return;
 
 		isOpen = true;
 		toggleAriaHidden(isOpen);
@@ -96,7 +98,7 @@ function Dialog(modal, main, options) {
 	}
 
 	function close() {
-		if (!isOpen) return;
+		if (!isOpen || !initiated) return;
 
 		isOpen = false;
 		toggleAriaHidden(isOpen);
@@ -135,6 +137,7 @@ function Dialog(modal, main, options) {
 		if (typeof config.onDestroy === 'function') {
 			config.onDestroy(modalElement, mainElement);
 		}
+		initiated = false;
 	}
 
 	if (config.autoInit) {
