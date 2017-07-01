@@ -7,6 +7,7 @@ const defaults = {
 	onOpen: (dialog, main) => {},
 	onClose: (dialog, main) => {},
 	onDestroy: (dialog, main) => {},
+	autoInit: true,
 };
 
 export default defaults;

@@ -137,7 +137,9 @@ function Dialog(modal, main, options) {
 		}
 	}
 
-	create();
+	if (config.autoInit) {
+		create();
+	}
 
 	return { create, open, close, toggle, isOpen, destroy }
 
