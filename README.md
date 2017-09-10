@@ -1,27 +1,26 @@
 # Dialog
 
-- Automatically handles adding and toggling the appropiate aria roles, states and properties.
-- Can be used as an accesible baseline for any dialog or dialog like like UI e.g lightbox's or fullscreen menus. 
+Dialog provides a bare bones baseline for building accessible modals or modal like UI elements such as fullscreen menus.
 
 [View demo on CodePen](https://codepen.io/rynpsc/pen/YVVGdr)
 
 ## Install
 
-### Yarn
+### npm
 
 ```
-yarn add @rynpsc/dialog
-```
-
-### NPM
-
-```
-npm install --save @rynpsc/dialog
+npm install @rynpsc/dialog
 ```
 
 ## Usage
 
-Dialog requires that the dialog element lives outside of the main page content.
+The `Dialog` constructor takes three parameters:
+
+* `dialog` - The element ID of the dialog element
+* `main` - The element ID of the main page content
+* `options` - Configuration Object ([see options](#options))
+
+### HTML
 
 ```html
 <body>
@@ -37,46 +36,27 @@ Dialog requires that the dialog element lives outside of the main page content.
 </body>
 ```
 
-Alternatively the dialog element can be placed within `#main` and the script will move the `#dialog` element outside of the `#main` element.
-
-```html
-<body>
-	
-	<div id="main">
-		<!-- All other page content -->
-		
-		<div class="dialog" id="dialog">
-			<!-- Dialog content -->
-		</div>
-
-	</div>
-
-</body>
-```
-
-The `Dialog` constructor takes three parameters:
-
-* `dialog` - The element ID of the dialog element
-* `main` - The element ID of the main page content
-* `options` - Configuration Object ([see options](#options))
+### JavaScript
 
 ```js
 import Dialog from '@rynpsc/dialog';
 
-const dialog = Dialog(dialog, main, options);
+const dialog = dialog(dialog, main, options);
 ```
 
-Dialog does not provide and styling of its own, instead this is left to the user to implement.
+### CSS
 
- ```css
+```css
 .dialog {
 	display: none;
 }
 
-.dialog[aria-hidden="false"] {
+.dialog.is-open {
 	display: block;
 }
 ```
+
+[For an example on how to animate the dialog see the CodePen demo](https://codepen.io/rynpsc/pen/YVVGdr).
 
 ## Options
 
@@ -94,21 +74,9 @@ const dialog = Dialog('dialog', 'main', {
 	// Whether dialog is of type alertdialog
 	alert: false,
 
-	// Callback on initialisation
-	onCreate: (dialog, main) => {},
-	
-	// Callback on open
-	onOpen: (dialog, main) => {},
-	
-	// Callback on close
-	onClose: (dialog, main) => {},
-
-	// Callback on destroy
-	onDestroy: (dialog, main) => {},
+	autoInit: false,
 });
 ```
-
-The callbacks , `onCreate`, `onOpen`, `onClose` and `onDestroy` each access to two parameters, `dialog` and `main` which reference the respective `HTMLElements`.
 
 ## API
 
@@ -130,7 +98,7 @@ dialog.close();
 
 ### toggle
 
-Toggle the dialog between open and close.
+Toggle the dialog between opened and closed.
 
 ```js
 dialog.toggle(force);
@@ -140,13 +108,13 @@ If the optional `force` parameter evaluates to true, open the dialog, if false, 
 
 ### destroy
 
-Destroy the dialog. 
+Destroy the dialog.
 
 ```js
 dialog.destroy();
 ```
 
-Note: If relying on the library to move the `dialog` element outsideof the `main` element the method does not currently restore the `dialog` element to it's previous DOM position.
+Note: If relying on the library to move the `dialog` element outsideof the `main` element the method does not currently restore the `dialog` element to it's original DOM position.
 
 ### create
 
@@ -154,6 +122,22 @@ Create the dialog after destroying it.
 
 ```js
 dialog.create();
+```
+
+### on
+
+Subscribe to an event.
+
+```js
+dialog.on(event);
+```
+
+### off
+
+Unsubscribe to an event.
+
+```js
+dialog.off(event);
 ```
 
 ### isOpen
@@ -164,6 +148,60 @@ Returns a Boolean indicating if the dialog is currently open.
 dialog.isOpen;
 ```
 
+### elements
+
+An object containing the dialog and main elements.
+
+```js
+const { dialog, main } = dialog.elements;
+```
+
+## Events
+
+### open
+
+Emitted when the dialog opens.
+
+```js
+dialog.on('open', listener);
+```
+
+### close
+
+Emitted when the dialog closes.
+
+```js
+dialog.on('close', listener);
+```
+
+### create
+
+```js
+dialog.on('create', listener);
+```
+
+Emitted after the dialog is created.
+
+Note in order to listen for the initial create event the dialog must be manually created via the `create()` method.
+
+```js
+const dialog = dialog(dialog, main, {
+	autoInit: false
+});
+
+dialog.on('create', () => console.log('Dialog created'));
+
+dialog.create();
+```
+
+### destroy
+
+```js
+dialog.on('destroy', listener);
+```
+
+Emitted after the dialog is destroyed.
+
 ## License
 
-MIT &copy; 2017 [Ryan Pascoe](https://github.com/rynpsc)
+MIT &copy; [Ryan Pascoe](https://github.com/rynpsc)
