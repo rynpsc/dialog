@@ -1,5 +1,5 @@
 import defaults from './defaults';
-import * as Emitter from './emitter';
+import emitter from './emitter';
 import focusTrap from './focus-trap';
 
 function dialog(dialog, main, options) {
@@ -8,6 +8,8 @@ function dialog(dialog, main, options) {
 		main: document.getElementById(main),
 		dialog: document.getElementById(dialog),
 	};
+
+	let events = emitter();
 
 	if (!elements.dialog) {
 		throw new Error(`No element with the id "${dialog}"`);
@@ -47,7 +49,7 @@ function dialog(dialog, main, options) {
 
 		initiated = true;
 
-		Emitter.emit('create', elements.dialog);
+		events.emit('create', elements.dialog);
 	}
 
 	/**
@@ -59,7 +61,7 @@ function dialog(dialog, main, options) {
 		isOpen = true;
 
 		elements.dialog.classList.add(config.openClass);
-		Emitter.emit('open', elements.dialog);
+		events.emit('open', elements.dialog);
 
 		document.addEventListener('keydown', onKeydown, true);
 
@@ -79,7 +81,7 @@ function dialog(dialog, main, options) {
 		document.removeEventListener('keydown', onKeydown, true);
 
 		elements.dialog.classList.remove(config.openClass);
-		Emitter.emit('close', elements.dialog);
+		events.emit('close', elements.dialog);
 	}
 
 	/**
@@ -98,14 +100,14 @@ function dialog(dialog, main, options) {
 		close();
 		initiated = false;
 		attributes.forEach(attr => elements.dialog.removeAttribute(attr));
-		Emitter.emit('destroy', elements.dialog);
+		events.emit('destroy', elements.dialog);
 	}
 
 	if (config.autoInit) {
 		create();
 	}
 
-	return { elements, create, destroy, open, close, toggle, isOpen, on: Emitter.on, off: Emitter.off };
+	return { elements, create, destroy, open, close, toggle, isOpen, on: events.on, off: events.off };
 }
 
 export default dialog;
