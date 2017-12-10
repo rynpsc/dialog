@@ -37,14 +37,21 @@ function dialog(dialog, main, options) {
 		const labeledby = document.getElementById(config.label);
 		const attr = labeledby ? 'labeledby' : 'label';
 
+		elements.main.setAttribute('aria-hidden', false);
+
 		elements.dialog.setAttribute('role', role);
 		elements.dialog.setAttribute('aria-modal', true);
 		elements.dialog.setAttribute(`aria-${attr}`, config.label);
+		elements.dialog.setAttribute('aria-hidden', true);
 
 		if (document.getElementById(config.description)) {
 			elements.dialog.setAttribute('aria-describedby', config.description);
 		} else if (config.description) {
 			throw new Error(`Invalid element: No element with the id "${config.description}"`);
+		}
+
+		if (elements.main.contains(elements.dialog)) {
+			document.body.appendChild(elements.dialog);
 		}
 
 		initiated = true;
@@ -59,6 +66,9 @@ function dialog(dialog, main, options) {
 		if (isOpen || !initiated) return;
 
 		isOpen = true;
+
+		elements.main.setAttribute('aria-hidden', true);
+		elements.dialog.setAttribute('aria-hidden', false);
 
 		elements.dialog.classList.add(config.openClass);
 		events.emit('open', elements.dialog);
@@ -77,6 +87,9 @@ function dialog(dialog, main, options) {
 		trap.deactivate();
 
 		isOpen = false;
+
+		elements.main.setAttribute('aria-hidden', false);
+		elements.dialog.setAttribute('aria-hidden', true);
 
 		document.removeEventListener('keydown', onKeydown, true);
 
