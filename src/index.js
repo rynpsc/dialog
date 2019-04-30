@@ -1,8 +1,12 @@
 import defaults from './defaults';
 import focusTrap from './focus-trap';
 
+/**
+ * @param {string} dialog - ID of the HTMLElement.
+ * @param {string} main - ID of the HTMLElement.
+ * @param {Object} options - Options object.
+ */
 export function dialog(dialog, main, options) {
-
 	const elements = {
 		main: document.getElementById(main),
 		dialog: document.getElementById(dialog),
@@ -60,7 +64,9 @@ export function dialog(dialog, main, options) {
 	 * Open
 	 */
 	function open() {
-		if (isOpen || !initiated) return;
+		if (isOpen || !initiated) {
+			return;
+		}
 
 		if (!dispatchEvent('open')) {
 			return;
@@ -82,7 +88,9 @@ export function dialog(dialog, main, options) {
 	 * Close
 	 */
 	function close() {
-		if (!isOpen || !initiated) return;
+		if (!isOpen || !initiated) {
+			return;
+		}
 
 		if (!dispatchEvent('close')) {
 			return;
@@ -101,7 +109,8 @@ export function dialog(dialog, main, options) {
 	}
 
 	/**
-	 * Toggle
+	 * Toggle Dialog display.
+	 * @param {boolean} toggle - If true open, if false close.
 	 */
 	function toggle(toggle = !isOpen) {
 		toggle ? open() : close();
@@ -111,7 +120,13 @@ export function dialog(dialog, main, options) {
 	 * Destroy
 	 */
 	function destroy() {
-		const attributes = [ 'aria-describedby', 'aria-label', 'aria-labeledby', 'aria-modal', 'role' ];
+		const attributes = [
+			'role',
+			'aria-modal',
+			'aria-label',
+			'aria-labeledby',
+			'aria-describedby',
+		];
 
 		close();
 		initiated = false;
