@@ -1,5 +1,4 @@
 import defaults from './defaults';
-import emitter from './emitter';
 import focusTrap from './focus-trap';
 
 export function dialog(dialog, main, options) {
@@ -8,8 +7,6 @@ export function dialog(dialog, main, options) {
 		main: document.getElementById(main),
 		dialog: document.getElementById(dialog),
 	};
-
-	let events = emitter();
 
 	if (!elements.dialog) {
 		throw new Error(`No element with the id "${dialog}"`);
@@ -56,7 +53,7 @@ export function dialog(dialog, main, options) {
 
 		initiated = true;
 
-		events.emit('create', elements.dialog);
+		dispatchEvent('create');
 	}
 
 	/**
@@ -65,13 +62,16 @@ export function dialog(dialog, main, options) {
 	function open() {
 		if (isOpen || !initiated) return;
 
+		if (!dispatchEvent('open')) {
+			return;
+		}
+
 		isOpen = true;
 
 		elements.main.setAttribute('aria-hidden', true);
 		elements.dialog.setAttribute('aria-hidden', false);
 
 		elements.dialog.classList.add(config.openClass);
-		events.emit('open', elements.dialog);
 
 		document.addEventListener('keydown', onKeydown, true);
 
@@ -84,6 +84,10 @@ export function dialog(dialog, main, options) {
 	function close() {
 		if (!isOpen || !initiated) return;
 
+		if (!dispatchEvent('close')) {
+			return;
+		}
+
 		trap.deactivate();
 
 		isOpen = false;
@@ -94,7 +98,6 @@ export function dialog(dialog, main, options) {
 		document.removeEventListener('keydown', onKeydown, true);
 
 		elements.dialog.classList.remove(config.openClass);
-		events.emit('close', elements.dialog);
 	}
 
 	/**
@@ -113,8 +116,43 @@ export function dialog(dialog, main, options) {
 		close();
 		initiated = false;
 		attributes.forEach(attr => elements.dialog.removeAttribute(attr));
-		events.emit('destroy', elements.dialog);
+		dispatchEvent('destroy');
 	}
 
-	return { elements, create, destroy, open, close, toggle, isOpen, on: events.on, off: events.off };
+	/**
+	 * Wrapper method to add an event listener.
+	 *
+	 * @param {string} type
+	 * @param {function} handler
+	 */
+	function on(type, handler) {
+		elements.dialog.addEventListener(type, handler);
+	}
+
+	/**
+	 * Wrapper method to remove an event listener.
+	 *
+	 * @param {string} type
+	 * @param {function} handler
+	 */
+	function off(type, handler) {
+		elements.dialog.removeEventListener(type, handler);
+	}
+
+	/**
+	 * Dispatches a custom event.
+	 *
+	 * @param {string} name - The event name.
+	 * @returns {boolean} False if preventDefault() was called, true otherwise.
+	 */
+	function dispatchEvent(name) {
+		const event = new CustomEvent(name, {
+			bubbles: true,
+			cancelable: true,
+		});
+
+		return elements.dialog.dispatchEvent(event);
+	}
+
+	return { elements, create, destroy, open, close, toggle, isOpen, on, off };
 }
