@@ -116,9 +116,5 @@ export function dialog(dialog, main, options) {
 		events.emit('destroy', elements.dialog);
 	}
 
-	if (config.autoInit) {
-		create();
-	}
-
 	return { elements, create, destroy, open, close, toggle, isOpen, on: events.on, off: events.off };
 }
