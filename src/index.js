@@ -2,7 +2,7 @@ import defaults from './defaults';
 import emitter from './emitter';
 import focusTrap from './focus-trap';
 
-function dialog(dialog, main, options) {
+export function dialog(dialog, main, options) {
 
 	const elements = {
 		main: document.getElementById(main),
@@ -122,5 +122,3 @@ function dialog(dialog, main, options) {
 
 	return { elements, create, destroy, open, close, toggle, isOpen, on: events.on, off: events.off };
 }
-
-export default dialog;
