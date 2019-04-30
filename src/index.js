@@ -16,8 +16,8 @@ export function dialog(dialog, main, options) {
 	}
 
 	if (!elements.main) {
-  	throw new Error(`No element with the id "${main}"`);
-  }
+		throw new Error(`No element with the id "${main}"`);
+	}
 
 	const config = Object.assign({}, defaults, options);
 	const trap = focusTrap(elements.dialog, config.focus);
