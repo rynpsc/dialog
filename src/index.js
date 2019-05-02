@@ -7,7 +7,11 @@ import focusTrap from './focus-trap';
  * @param {Object} options - Options object.
  */
 export function dialog(dialog, main, options) {
+	let isOpen = false;
+	let initiated = false;
+
 	const elements = {
+		triggeringElement: undefined,
 		main: document.getElementById(main),
 		dialog: document.getElementById(dialog),
 	};
@@ -21,10 +25,8 @@ export function dialog(dialog, main, options) {
 	}
 
 	const config = Object.assign({}, defaults, options);
-	const trap = focusTrap(elements.dialog, config.focus);
 
-	let isOpen = false;
-	let initiated = false;
+	const trap = focusTrap(elements.dialog);
 
 	function onKeydown(event) {
 		if (event.key === 'Escape') close();
@@ -35,24 +37,20 @@ export function dialog(dialog, main, options) {
 	 */
 	function create() {
 		const role = config.alert ? 'alertdialog' : 'dialog';
-		const labeledby = document.getElementById(config.label);
-		const attr = labeledby ? 'labeledby' : 'label';
-
-		elements.main.setAttribute('aria-hidden', false);
 
 		elements.dialog.setAttribute('role', role);
 		elements.dialog.setAttribute('aria-modal', true);
-		elements.dialog.setAttribute(`aria-${attr}`, config.label);
-		elements.dialog.setAttribute('aria-hidden', true);
 
-		if (document.getElementById(config.description)) {
-			elements.dialog.setAttribute('aria-describedby', config.description);
-		} else if (config.description) {
-			throw new Error(`Invalid element: No element with the id "${config.description}"`);
+		if (config.label) {
+			// If the label matches an ID use the element as the label.
+			const labeledby = document.getElementById(config.label);
+			const attribute = labeledby ? 'labelledby' : 'label';
+
+			elements.dialog.setAttribute(`aria-${attribute}`, config.label);
 		}
 
-		if (elements.main.contains(elements.dialog)) {
-			document.body.appendChild(elements.dialog);
+		if (config.description && document.getElementById(config.description)) {
+			elements.dialog.setAttribute('aria-describedby', config.description);
 		}
 
 		initiated = true;
@@ -63,7 +61,7 @@ export function dialog(dialog, main, options) {
 	/**
 	 * Open
 	 */
-	function open() {
+	function open(element) {
 		if (isOpen || !initiated) {
 			return;
 		}
@@ -72,16 +70,15 @@ export function dialog(dialog, main, options) {
 			return;
 		}
 
+		if (element instanceof HTMLElement) {
+			elements.triggeringElement = element;
+		}
+
 		isOpen = true;
-
-		elements.main.setAttribute('aria-hidden', true);
-		elements.dialog.setAttribute('aria-hidden', false);
-
 		elements.dialog.classList.add(config.openClass);
-
 		document.addEventListener('keydown', onKeydown, true);
 
-		trap.activate();
+		trap.activate(elements.dialog.querySelector('[data-dialog-autofocus]'));
 	}
 
 	/**
@@ -96,15 +93,10 @@ export function dialog(dialog, main, options) {
 			return;
 		}
 
-		trap.deactivate();
+		trap.deactivate(elements.triggeringElement);
 
 		isOpen = false;
-
-		elements.main.setAttribute('aria-hidden', false);
-		elements.dialog.setAttribute('aria-hidden', true);
-
 		document.removeEventListener('keydown', onKeydown, true);
-
 		elements.dialog.classList.remove(config.openClass);
 	}
 
@@ -131,6 +123,7 @@ export function dialog(dialog, main, options) {
 		close();
 		initiated = false;
 		attributes.forEach(attr => elements.dialog.removeAttribute(attr));
+
 		dispatchEvent('destroy');
 	}
 

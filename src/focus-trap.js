@@ -1,99 +1,187 @@
 const selectors = [
-	'[contenteditable]',
-	'[tabindex]:not([tabindex^="-"])',
+	'input',
+	'select',
+	'textarea',
+	'button',
+	'iframe',
 	'a[href]',
 	'area[href]',
-	'button:not([disabled])',
-	'embed',
-	'iframe',
-	'input:not([disabled])',
-	'object',
-	'select:not([disabled])',
-	'textarea:not([disabled])'
+	'audio[controls]',
+	'video[controls]',
+	'[contenteditable]:not([contenteditable="false"])',
 ];
 
-function isVisible(element) {
-	const isHidden = !(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
-	const isInvisible = window.getComputedStyle(element).visibility === 'hidden';
-
-	return !(isHidden || isInvisible);
-}
-
-function getFocusableElements(node) {
-	return [...node.querySelectorAll(selectors)].filter(elem => isVisible(elem));
-}
-
-function focus(node) {
-	if (node && node.focus) node.focus();
-}
-
-function focusFirstElement(node) {
-	const nodes = getFocusableElements(node);
-	if (nodes.length) focus(nodes[0]);
-}
-
-function trapTab(element, event) {
-	const activeElement = document.activeElement;
-
-	const elements = getFocusableElements(element);
-	const firstTabStop = elements[0];
-	const lastTabStop = elements[elements.length - 1];
-
-	if (event.shiftKey && activeElement === firstTabStop) {
-		focus(lastTabStop);
-		event.preventDefault();
+/**
+ *	Checks if an element appears in the tab order.
+ *
+ * @param {HTMLElement} element
+ * @returns {boolean}
+ */
+function isTabbable(element) {
+	if (isRadio(element) && !isFocusableRadio(element)) {
+		return false;
 	}
 
-	if (!event.shiftKey && activeElement === lastTabStop) {
-		focus(firstTabStop);
-		event.preventDefault();
+	let tabindex = parseInt(element.getAttribute('tabindex'), 10);
+
+	if (tabindex && tabindex < 0) {
+		return false;
+	}
+
+	return  (
+		!element.hidden &&
+		!element.disabled &&
+		!(element.offsetParent === null || getComputedStyle(element).visibility === 'hidden')
+	);
+}
+
+function focus(element) {
+	if (element && element instanceof HTMLElement && element.focus) {
+		element.focus();
 	}
 }
 
-function focusTrap(element, initialElement) {
+/**
+ *	Checks if an element is a radio button.
+
+ * @param {HTMLElement} element
+ * @returns {boolean}
+ */
+function isRadio(element) {
+	return (element.tagName === 'INPUT' || element.type === 'radio');
+}
+
+/**
+ * Checks if a radio button is focusable. A radio is focusable if either no
+ * radio within the group is checked or the radio is the checked option in
+ * a group.
+ *
+ * @param {HTMLElement} element The element to check.
+ * @returns {boolean}
+ */
+function isFocusableRadio(element) {
+	let inputs = Array.from(document.getElementsByName(element.name));
+	let hasCheckedOption = inputs.some(input => input.checked);
+
+	if (!hasCheckedOption) {
+		return true;
+	}
+
+	return element.checked;
+}
+
+/**
+ * Gets the focusable child elements within a given element.
+ *
+ * @param {HTMLElement} element
+ * @returns {Array}
+ */
+function getFocusableElements(element) {
+	return Array.from(element.querySelectorAll(selectors))
+		.filter(elem => isTabbable(elem));
+}
+
+/**
+ *	Focus the focusable child element within a given element.
+ *
+ * @param {HTMLElement} element
+ */
+function focusFirstElement(element) {
+	const nodes = getFocusableElements(element);
+
+	if (nodes.length) {
+		focus(nodes[0]);
+	}
+}
+
+/**
+ *	Focus trap constructor.
+ *
+ * @param {HTMLElement} element
+ */
+function focusTrap(element) {
 	let trapActivated = false;
-	let initialActiveElement = undefined;
 
-	function onFocus(event) {
-		const focusLost = !element.contains(document.activeElement);
-		event.preventDefault();
-		event.stopImmediatePropagation();
-		if (focusLost && trapActivated) focusFirstElement(element);
-	}
-
-	function onKeydown(event) {
-		if (event.key === 'Tab') trapTab(element, event);
-	}
-
-	function activate() {
-		if (trapActivated) return;
-
-		trapActivated = true;
-		initialActiveElement = document.activeElement;
-
-		if (initialElement && element.contains(initialElement)) {
-			focus(initialElement);
-		} else {
-			focusFirstElement(element);
+	/**
+	 * Activate the tab trap.
+	 */
+	function activate(element) {
+		if (trapActivated) {
+			return;
 		}
 
-		document.addEventListener('focus', onFocus, true);
+		focus(element);
+		trapActivated = true;
+
+		document.addEventListener('focusin', onFocus, true);
 		document.addEventListener('keydown', onKeydown, true);
 	}
 
-	function deactivate() {
-		if (!trapActivated) return;
+	/**
+	 * Deactivate the tab trap.
+	 */
+	function deactivate(element) {
+		if (!trapActivated) {
+			return;
+		}
 
-		trapActivated = false;
-		focus(initialActiveElement);
-		initialActiveElement = undefined;
-
-		document.removeEventListener('focus', onFocus, true);
+		document.removeEventListener('focusin', onFocus, true);
 		document.removeEventListener('keydown', onKeydown, true);
+
+		focus(element);
+		trapActivated = false;
 	}
 
-	return { activate, deactivate }
+	/**
+	 *
+	 * @param {FocusEvent} event
+	 */
+	function onFocus(event) {
+		const focusLost = !element.contains(document.activeElement);
 
+		event.preventDefault();
+		event.stopImmediatePropagation();
+
+		if (focusLost && trapActivated) {
+			focusFirstElement(element);
+		}
+	}
+
+	/**
+	 * Handle keydown event.
+	 *
+	 * @param {KeyboardEvent} event
+	 */
+	function onKeydown(event) {
+		if (event.key === 'Tab') {
+			trapTab(element, event);
+		}
+
+		/**
+		 *
+		 * @param {HTMLElement} element
+		 * @param {KeyboardEvent} event
+		 */
+		function trapTab(element, event) {
+			const activeElement = document.activeElement;
+
+			const elements = getFocusableElements(element);
+			const firstTabStop = elements[0];
+			const lastTabStop = elements[elements.length - 1];
+
+			if (event.shiftKey && (activeElement == firstTabStop)) {
+				focus(lastTabStop);
+				event.preventDefault();
+			}
+
+			if (!event.shiftKey && (activeElement == lastTabStop)) {
+				focus(firstTabStop);
+				event.preventDefault();
+			}
+		}
+	}
+
+	return { activate, deactivate };
 }
 
 export default focusTrap;
