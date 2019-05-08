@@ -116,7 +116,7 @@ export function dialog(dialog, main, options) {
 			'role',
 			'aria-modal',
 			'aria-label',
-			'aria-labeledby',
+			'aria-labelledby',
 			'aria-describedby',
 		];
 
