@@ -34,6 +34,10 @@ export function dialog(dialog, main, options) {
 	 * Create
 	 */
 	function create() {
+		if (initiated) {
+			return false;
+		}
+
 		const role = config.alert ? 'alertdialog' : 'dialog';
 
 		elements.dialog.setAttribute('role', role);
@@ -110,6 +114,10 @@ export function dialog(dialog, main, options) {
 	 * Destroy
 	 */
 	function destroy() {
+		if (!initiated) {
+			return false;
+		}
+
 		const attributes = [
 			'role',
 			'aria-modal',
