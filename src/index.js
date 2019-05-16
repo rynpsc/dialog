@@ -16,12 +16,10 @@ export function dialog(dialog, main, options) {
 		dialog: document.getElementById(dialog),
 	};
 
-	if (!elements.dialog) {
-		throw new Error(`No element with the id "${dialog}"`);
+	if (!elements.dialog || !elements.main) {
+		return;
 	}
 
-	if (!elements.main) {
-		throw new Error(`No element with the id "${main}"`);
 	}
 
 	const config = Object.assign({}, defaults, options);
