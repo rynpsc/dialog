@@ -154,7 +154,9 @@ export function dialog(dialog, main, options) {
 	 * @returns {boolean} False if preventDefault() was called, true otherwise.
 	 */
 	function dispatchEvent(name) {
-		const event = new CustomEvent(name, {
+		const prefixedName = `dialog:${name}`;
+
+		const event = new CustomEvent(prefixedName, {
 			bubbles: true,
 			cancelable: true,
 		});
