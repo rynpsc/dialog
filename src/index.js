@@ -1,5 +1,26 @@
 import defaults from './defaults';
 import focusTrap from './focus-trap';
+export { domapi } from  './dom-api';
+
+export const instances = {};
+
+/**
+ * Get the dialog instance with the corresponding ID.
+ *
+ * @param {string} id ID of dialog element.
+ * @returns {Object|void}
+ */
+export function getInstanceById(id) {
+	if (id === undefined) {
+		return;
+	}
+
+	if (!instances.hasOwnProperty(id)) {
+		return;
+	}
+
+	return instances[id];
+}
 
 /**
  * @param {string} dialog - ID of the HTMLElement.
@@ -20,6 +41,9 @@ export function dialog(dialog, main, options) {
 		return;
 	}
 
+	// If an instance already exists return it.
+	if (instances.hasOwnProperty(dialog)) {
+		return instances[dialog];
 	}
 
 	const config = Object.assign({}, defaults, options);
@@ -170,5 +194,7 @@ export function dialog(dialog, main, options) {
 		return elements.dialog.dispatchEvent(event);
 	}
 
-	return { elements, create, destroy, open, close, toggle, isOpen, on, off };
+	const instance = { on, off, open, close, isOpen, create, toggle, destroy, elements };
+
+	return instances[dialog] = instance;
 }
