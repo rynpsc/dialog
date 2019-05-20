@@ -3,22 +3,22 @@
   "version": "2.1.0",
   "description": "A modern, lightweight and accessible dialog with a focus on progressive enhancement",
   "keywords": [
+    "accessible",
     "dialog",
-    "modal",
-    "accessible"
+    "modal"
   ],
-  "license": "MIT",
   "homepage": "https://github.com/rynpsc/dialog",
   "bugs": "https://github.com/rynpsc/dialog/issues",
   "repository": "github:rynpsc/dialog",
+  "license": "MIT",
   "files": [
     "dist"
   ],
   "main": "dist/dialog.js",
   "scripts": {
-		"build": "microbundle build src/index.js",
-		"dev": "microbundle watch src/index.js",
-		"prepare": "npm run build"
+    "build": "microbundle build src/index.js",
+    "dev": "microbundle watch src/index.js",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "microbundle": "^0.11.0"
