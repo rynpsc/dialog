@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.0
+
+- Added `aria-hidden` attribute to main and dialog elements.
+
+
 ## v2.0.0
 
 - Removed `onCreate`, `onDestroy`, `onOpen` and `onClose` callbacks.
