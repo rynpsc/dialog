@@ -11,10 +11,14 @@
   "homepage": "https://github.com/rynpsc/dialog",
   "bugs": "https://github.com/rynpsc/dialog/issues",
   "repository": "github:rynpsc/dialog",
+  "files": [
+    "dist"
+  ],
   "main": "dist/dialog.js",
   "scripts": {
 		"build": "microbundle build src/index.js",
-		"dev": "microbundle watch src/index.js"
+		"dev": "microbundle watch src/index.js",
+		"prepare": "npm run build"
   },
   "devDependencies": {
     "microbundle": "^0.11.0"
