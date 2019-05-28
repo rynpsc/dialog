@@ -3,6 +3,7 @@
   "version": "2.1.0",
   "description": "A modern, lightweight and accessible dialog with a focus on progressive enhancement",
   "keywords": [
+    "accessibility",
     "accessible",
     "dialog",
     "modal"
