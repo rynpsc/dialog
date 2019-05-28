@@ -14,8 +14,8 @@ const selectors = [
 /**
  *	Checks if an element appears in the tab order.
  *
- * @param {HTMLElement} element
- * @returns {boolean}
+ * @param {HTMLElement} element - The element to check.
+ * @returns {boolean} Whether the element is tabbable.
  */
 function isTabbable(element) {
 	if (isRadio(element) && !isFocusableRadio(element)) {
@@ -28,13 +28,18 @@ function isTabbable(element) {
 		return false;
 	}
 
-	return  (
+	return (
 		!element.hidden &&
 		!element.disabled &&
 		!(element.offsetParent === null || getComputedStyle(element).visibility === 'hidden')
 	);
 }
 
+/**
+ * Focus an element.
+ *
+ * @param {HTMLElement} element The element to focus.
+ */
 function focus(element) {
 	if (element && element instanceof HTMLElement && element.focus) {
 		element.focus();
@@ -43,7 +48,7 @@ function focus(element) {
 
 /**
  *	Checks if an element is a radio button.
-
+ *
  * @param {HTMLElement} element
  * @returns {boolean}
  */
@@ -56,8 +61,8 @@ function isRadio(element) {
  * radio within the group is checked or the radio is the checked option in
  * a group.
  *
- * @param {HTMLElement} element The element to check.
- * @returns {boolean}
+ * @param {HTMLElement} element - The element to check.
+ * @returns {boolean} Whether the radio is focusable.
  */
 function isFocusableRadio(element) {
 	let inputs = Array.from(document.getElementsByName(element.name));
@@ -98,12 +103,15 @@ function focusFirstElement(element) {
  *	Focus trap constructor.
  *
  * @param {HTMLElement} element
+ * @returns {Object}
  */
 function focusTrap(element) {
 	let trapActivated = false;
 
 	/**
-	 * Activate the tab trap.
+	 * Activate trap and focus the provided element.
+	 *
+	 * @param {HTMLElement} element - Element to focus upon activation.
 	 */
 	function activate(element) {
 		if (trapActivated) {
@@ -113,19 +121,21 @@ function focusTrap(element) {
 		focus(element);
 		trapActivated = true;
 
-		document.addEventListener('focusin', onFocus, true);
+		document.addEventListener('focusin', onFocusIn, true);
 		document.addEventListener('keydown', onKeydown, true);
 	}
 
 	/**
-	 * Deactivate the tab trap.
+	 * Deactivate the trap and optionally redirect focus.
+	 *
+	 * @param {HTMLElement} element - Element to focus upon deactivation.
 	 */
 	function deactivate(element) {
 		if (!trapActivated) {
 			return;
 		}
 
-		document.removeEventListener('focusin', onFocus, true);
+		document.removeEventListener('focusin', onFocusIn, true);
 		document.removeEventListener('keydown', onKeydown, true);
 
 		focus(element);
@@ -133,10 +143,9 @@ function focusTrap(element) {
 	}
 
 	/**
-	 *
 	 * @param {FocusEvent} event
 	 */
-	function onFocus(event) {
+	function onFocusIn(event) {
 		const focusLost = !element.contains(document.activeElement);
 
 		event.preventDefault();
@@ -148,8 +157,6 @@ function focusTrap(element) {
 	}
 
 	/**
-	 * Handle keydown event.
-	 *
 	 * @param {KeyboardEvent} event
 	 */
 	function onKeydown(event) {
@@ -158,7 +165,6 @@ function focusTrap(element) {
 		}
 
 		/**
-		 *
 		 * @param {HTMLElement} element
 		 * @param {KeyboardEvent} event
 		 */

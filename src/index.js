@@ -8,15 +8,15 @@ export const instances = {};
  * Get the dialog instance with the corresponding ID.
  *
  * @param {string} id ID of dialog element.
- * @returns {Object|void}
+ * @returns {Object|null}
  */
 export function getInstanceById(id) {
 	if (id === undefined) {
-		return;
+		return null;
 	}
 
 	if (!instances.hasOwnProperty(id)) {
-		return;
+		return null;
 	}
 
 	return instances[id];
@@ -26,6 +26,7 @@ export function getInstanceById(id) {
  * @param {string} dialog - ID of the HTMLElement.
  * @param {string} main - ID of the HTMLElement.
  * @param {Object} options - Options object.
+ * @returns {Object|null}
  */
 export function dialog(dialog, main, options) {
 	let isOpen = false;
@@ -38,7 +39,7 @@ export function dialog(dialog, main, options) {
 	};
 
 	if (!elements.dialog || !elements.main) {
-		return;
+		return null;
 	}
 
 	// If an instance already exists return it.
@@ -50,13 +51,13 @@ export function dialog(dialog, main, options) {
 
 	const trap = focusTrap(elements.dialog);
 
+	/**
+	 * @param {KeyboardEvent} event
+	 */
 	function onKeydown(event) {
 		if (event.key === 'Escape') close();
 	}
 
-	/**
-	 * Create
-	 */
 	function create() {
 		if (initiated) {
 			return false;
@@ -85,7 +86,7 @@ export function dialog(dialog, main, options) {
 	}
 
 	/**
-	 * Open
+	 * @param {HTMLElement} element - The element that triggered opening, focus is sent to this element when closing.
 	 */
 	function open(element) {
 		if (isOpen || !initiated) {
@@ -107,9 +108,6 @@ export function dialog(dialog, main, options) {
 		trap.activate(elements.dialog.querySelector('[data-dialog-autofocus]'));
 	}
 
-	/**
-	 * Close
-	 */
 	function close() {
 		if (!isOpen || !initiated) {
 			return;
@@ -128,15 +126,13 @@ export function dialog(dialog, main, options) {
 
 	/**
 	 * Toggle Dialog display.
-	 * @param {boolean} toggle - If true open, if false close.
+	 *
+	 * @param {boolean} toggle - If true call `open()`, if false call `close()`.
 	 */
 	function toggle(toggle = !isOpen) {
 		toggle ? open() : close();
 	}
 
-	/**
-	 * Destroy
-	 */
 	function destroy() {
 		if (!initiated) {
 			return false;
