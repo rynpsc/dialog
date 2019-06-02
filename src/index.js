@@ -69,11 +69,10 @@ export function dialog(dialog, main, options) {
 		elements.dialog.setAttribute('aria-modal', true);
 
 		if (config.label) {
-			// If the label matches an ID use the element as the label.
-			const labeledby = document.getElementById(config.label);
-			const attribute = labeledby ? 'labelledby' : 'label';
+			const matchesID = document.getElementById(config.label);
+			const attribute = matchesID ? 'aria-labelledby' : 'aria-label';
 
-			elements.dialog.setAttribute(`aria-${attribute}`, config.label);
+			elements.dialog.setAttribute(attribute, config.label);
 		}
 
 		if (config.description && document.getElementById(config.description)) {
