@@ -17,11 +17,12 @@
   ],
   "main": "dist/dialog.js",
   "scripts": {
-    "build": "microbundle build src/index.js",
+    "build": "rimraf dist && microbundle build src/index.js",
     "dev": "microbundle watch src/index.js",
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "microbundle": "^0.11.0"
+    "microbundle": "^0.11.0",
+    "rimraf": "^2.6.3"
   }
 }
