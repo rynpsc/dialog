@@ -7,8 +7,8 @@
  * @property {string} openClass - The class applied to elements.dialog when open.
  */
 const defaults = {
-	label: 'Dialog',
 	description: '',
+	label: null,
 	alert: false,
 	openClass: 'is-open',
 };
