@@ -18,6 +18,10 @@ const selectors = [
  * @returns {boolean} Whether the element is tabbable.
  */
 function isTabbable(element) {
+	if (!element) {
+		return false;
+	}
+
 	if (isRadio(element) && !isFocusableRadio(element)) {
 		return false;
 	}
@@ -28,10 +32,14 @@ function isTabbable(element) {
 		return false;
 	}
 
+	if (!element.matches(selectors)) {
+		return false;
+	}
+
 	return (
 		!element.hidden &&
 		!element.disabled &&
-		!(element.offsetParent === null || getComputedStyle(element).visibility === 'hidden')
+		!(element.offsetParent === null || window.getComputedStyle(element).visibility === 'hidden')
 	);
 }
 
@@ -39,11 +47,16 @@ function isTabbable(element) {
  * Focus an element.
  *
  * @param {HTMLElement} element The element to focus.
+ * @returns {boolean} Indicates if the element was focused.
  */
 function focus(element) {
-	if (element && element instanceof HTMLElement && element.focus) {
-		element.focus();
+	if (!element || !element instanceof HTMLElement || !element.focus) {
+		return false;
 	}
+
+	element.focus();
+
+	return (document.activeElement == element);
 }
 
 /**
@@ -62,9 +75,13 @@ function isRadio(element) {
  * a group.
  *
  * @param {HTMLElement} element - The element to check.
- * @returns {boolean} Whether the radio is focusable.
+ * @returns {boolean} Whether the element is a radio button and is focusable.
  */
 function isFocusableRadio(element) {
+	if (!isRadio(element)) {
+		return false;
+	}
+
 	let inputs = Array.from(document.getElementsByName(element.name));
 	let hasCheckedOption = inputs.some(input => input.checked);
 
@@ -111,18 +128,19 @@ function focusTrap(element) {
 	/**
 	 * Activate trap and focus the provided element.
 	 *
-	 * @param {HTMLElement} element - Element to focus upon activation.
+	 * @param {HTMLElement} focusTarget - Element to focus upon activation.
 	 */
-	function activate(element) {
+	function activate(focusTarget = element) {
 		if (trapActivated) {
 			return;
 		}
 
-		focus(element);
-		trapActivated = true;
+		focus(isTabbable(focusTarget) ? focusTarget : element);
 
 		document.addEventListener('focusin', onFocusIn, true);
 		document.addEventListener('keydown', onKeydown, true);
+
+		trapActivated = true;
 	}
 
 	/**
@@ -139,6 +157,7 @@ function focusTrap(element) {
 		document.removeEventListener('keydown', onKeydown, true);
 
 		focus(element);
+
 		trapActivated = false;
 	}
 

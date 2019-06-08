@@ -65,6 +65,7 @@ export function dialog(dialog, main, options) {
 
 		const role = config.alert ? 'alertdialog' : 'dialog';
 
+		elements.dialog.setAttribute('tabindex', -1);
 		elements.dialog.setAttribute('role', role);
 		elements.dialog.setAttribute('aria-modal', true);
 
@@ -139,6 +140,7 @@ export function dialog(dialog, main, options) {
 
 		const attributes = [
 			'role',
+			'tabindex',
 			'aria-modal',
 			'aria-label',
 			'aria-labelledby',
