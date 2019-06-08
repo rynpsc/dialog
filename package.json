@@ -16,10 +16,12 @@
     "dist"
   ],
   "main": "dist/dialog.js",
+  "module": "dist/dialog.mjs",
+  "unpkg": "dist/dialog.umd.js",
   "scripts": {
     "build": "rimraf dist && microbundle build src/index.js",
     "dev": "microbundle watch src/index.js",
-    "prepare": "npm run build"
+    "prepare": "npm run -s build"
   },
   "devDependencies": {
     "microbundle": "^0.11.0",
