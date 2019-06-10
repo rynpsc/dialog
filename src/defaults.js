@@ -8,7 +8,7 @@
  */
 const defaults = {
 	description: '',
-	label: null,
+	label: 'Dialog',
 	alert: false,
 	openClass: 'is-open',
 };
