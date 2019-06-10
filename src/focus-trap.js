@@ -111,9 +111,11 @@ function getFocusableElements(element) {
 function focusFirstElement(element) {
 	const nodes = getFocusableElements(element);
 
-	if (nodes.length) {
-		focus(nodes[0]);
+	if (!nodes.length) {
+		return false;
 	}
+
+	return focus(nodes[0]);
 }
 
 /**
@@ -130,12 +132,16 @@ function focusTrap(element) {
 	 *
 	 * @param {HTMLElement} focusTarget - Element to focus upon activation.
 	 */
-	function activate(focusTarget = element) {
+	function activate(focusTarget) {
 		if (trapActivated) {
 			return;
 		}
 
-		focus(isTabbable(focusTarget) ? focusTarget : element);
+		if (isTabbable(focusTarget)) {
+			focus(focusTarget);
+		} else {
+			focusFirstElement(element) || focus(element);
+		}
 
 		document.addEventListener('focusin', onFocusIn, true);
 		document.addEventListener('keydown', onKeydown, true);
