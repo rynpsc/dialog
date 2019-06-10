@@ -23,6 +23,7 @@ export function getInstanceById(id) {
 }
 
 /**
+ * @constructor
  * @param {string} dialog - ID of the HTMLElement.
  * @param {string} main - ID of the HTMLElement.
  * @param {Object} options - Options object.
