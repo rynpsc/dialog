@@ -191,7 +191,7 @@ export function dialog(dialog, main, options) {
 		return elements.dialog.dispatchEvent(event);
 	}
 
-	const instance = { on, off, open, close, isOpen, create, toggle, destroy, elements };
+	const instance = { on, off, open, close, isOpen, initiated, create, toggle, destroy, elements };
 
 	return instances[dialog] = instance;
 }
