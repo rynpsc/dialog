@@ -64,6 +64,10 @@ if (dialog) {
 
 [For an example on how to animate the dialog see the CodePen demo](https://codepen.io/rynpsc/pen/YVVGdr).
 
+### Autofocus
+
+On opening the dialog focus should be set to an element inside it. This can be set by adding the `data-dialog-autofocus` attribute to the desired element. If this attribute isn't present focus will be directed to the first focusable element.
+
 ### Data Attribute API
 
 This library contains an optional data attribute API that enables opening and closing a dialog instance.
@@ -73,8 +77,8 @@ import { domapi } from '@rynpsc/dialog';
 ```
 
 ```html
-<button data-open-dialog="main">Open Dialog</button>
-<button data-close-dialog="main">Close Dialog</button>
+<button data-dialog-open="main">Open Dialog</button>
+<button data-dialog-close="main">Close Dialog</button>
 ```
 
 Where "main" is the ID of the dialog element.
@@ -83,17 +87,17 @@ Where "main" is the ID of the dialog element.
 
 ```js
 const dialog = Dialog('dialog', 'main', {
-  // String with label or element ID to use as label
+  // ID of HTMLElement to use in aria-labelledby or a string to use as the aria-label.
   label: 'Dialog',
   
-  // ID of an element containing dialogs description
+  // ID of HTMLElement to use in aria-describedby.
   description: '',
   
-  // Reference to HTMLElement to focus on open, defaults to the first focusable element
-  focus: '',
-  
-  // Whether dialog is of type alertdialog
+  // Set dialog role to alertdialog.
   alert: false,
+
+  // The class applied to elements.dialog when open.
+  openClass: 'is-open'
 });
 ```
 
@@ -143,7 +147,7 @@ Create the dialog after destroying it.
 dialog.create();
 ```
 
-### on()
+### on(string, function)
 
 Subscribe to an event.
 
@@ -151,7 +155,7 @@ Subscribe to an event.
 dialog.on(event);
 ```
 
-### off()
+### off(string, function)
 
 Unsubscribe to an event.
 
@@ -185,6 +189,8 @@ const { dialog, main } = dialog.elements;
 
 ## Events
 
+Events are handled via the [CustomEvent API](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent).
+
 ### open
 
 Emitted when the dialog opens.
@@ -193,6 +199,8 @@ Emitted when the dialog opens.
 dialog.on('dialog:open', listener);
 ```
 
+This event can be cancelled, see [Cancelling events](#cancelling-events).
+
 ### close
 
 Emitted when the dialog closes.
@@ -200,6 +208,8 @@ Emitted when the dialog closes.
 ```js
 dialog.on('dialog:close', listener);
 ```
+
+This event can be cancelled, see [Cancelling events](#cancelling-events).
 
 ### create
 
@@ -216,6 +226,16 @@ dialog.on('dialog:destroy', listener);
 ```
 
 Emitted after the dialog is destroyed.
+
+### Cancelling events
+
+Some event can be cancelling by calling `event.preventDefault`.
+
+```js
+dialog.on('dialog:cancel', function(event) {
+  event.preventDefault();
+});
+```
 
 ## Browser Support
 
