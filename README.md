@@ -14,24 +14,26 @@ npm install @rynpsc/dialog
 
 ## Usage
 
-The `Dialog` constructor takes three parameters:
+The `dialog` constructor takes three parameters:
 
-* `dialog` - The element ID of the dialog element
-* `main` - The element ID of the main page content
+* `dialog` - The ID of the element used as the dialog
+* `main` - The ID of the element containing the main page content
 * `options` - Configuration Object ([see options](#options))
 
 ### HTML
 
 ```html
 <body>
-	
-	<div id="main">
-		<!-- All other page content -->
-	</div>
+  
+  <div id="main">
+    <header></header>
+    <main></main>
+    <footer></footer>
+  </div>
 
-	<div class="dialog" id="dialog">
-		<!-- Dialog content -->
-	</div>
+  <div class="dialog" id="dialog">
+    <!-- Dialog content -->
+  </div>
 
 </body>
 ```
@@ -39,56 +41,75 @@ The `Dialog` constructor takes three parameters:
 ### JavaScript
 
 ```js
-import Dialog from '@rynpsc/dialog';
+import { dialog } from '@rynpsc/dialog';
 
 const dialog = dialog(dialog, main, options);
+
+if (dialog) {
+  dialog.create();
+}
 ```
 
 ### CSS
 
 ```css
 .dialog {
-	display: none;
+  display: none;
 }
 
 .dialog.is-open {
-	display: block;
+  display: block;
 }
 ```
 
 [For an example on how to animate the dialog see the CodePen demo](https://codepen.io/rynpsc/pen/YVVGdr).
 
+### Data Attribute API
+
+This library contains an optional data attribute API that enables opening and closing a dialog instance.
+
+```js
+import { domapi } from '@rynpsc/dialog';
+```
+
+```html
+<button data-open-dialog="main">Open Dialog</button>
+<button data-close-dialog="main">Close Dialog</button>
+```
+
+Where "main" is the ID of the dialog element.
+
 ## Options
 
 ```js
 const dialog = Dialog('dialog', 'main', {
-	// String with label or element ID to use as label
-	label: 'Dialog',
-	
-	// ID of an element containing dialogs description
-	description: '',
-	
-	// Reference to HTMLElement to focus on open, defaults to the first focusable element
-	focus: '',
-	
-	// Whether dialog is of type alertdialog
-	alert: false,
-
-	autoInit: false,
+  // String with label or element ID to use as label
+  label: 'Dialog',
+  
+  // ID of an element containing dialogs description
+  description: '',
+  
+  // Reference to HTMLElement to focus on open, defaults to the first focusable element
+  focus: '',
+  
+  // Whether dialog is of type alertdialog
+  alert: false,
 });
 ```
 
 ## API
 
-### open
+### open(element)
 
 Open the dialog.
 
 ```js
-dialog.open();
+dialog.open(element);
 ```
 
-### close
+The optional `element` argument is the element focus will be returned to when closing the dialog, usually this is the element that triggered opening. For example when manually triggering the dialog with a button, `element` should be the button that triggered the element
+
+### close()
 
 Close the dialog.
 
@@ -96,7 +117,7 @@ Close the dialog.
 dialog.close();
 ```
 
-### toggle
+### toggle()
 
 Toggle the dialog between opened and closed.
 
@@ -106,7 +127,7 @@ dialog.toggle(force);
 
 If the optional `force` parameter evaluates to true, open the dialog, if false, close the dialog.
 
-### destroy
+### destroy()
 
 Destroy the dialog.
 
@@ -114,9 +135,7 @@ Destroy the dialog.
 dialog.destroy();
 ```
 
-Note: If relying on the library to move the `dialog` element outsideof the `main` element the method does not currently restore the `dialog` element to it's original DOM position.
-
-### create
+### create()
 
 Create the dialog after destroying it.
 
@@ -124,7 +143,7 @@ Create the dialog after destroying it.
 dialog.create();
 ```
 
-### on
+### on()
 
 Subscribe to an event.
 
@@ -132,7 +151,7 @@ Subscribe to an event.
 dialog.on(event);
 ```
 
-### off
+### off()
 
 Unsubscribe to an event.
 
@@ -142,7 +161,15 @@ dialog.off(event);
 
 ### isOpen
 
-Returns a Boolean indicating if the dialog is currently open.
+Returns a boolean indicating if the dialog is currently open.
+
+```js
+dialog.isOpen;
+```
+
+### initiated
+
+Returns a boolean indicating if the dialy has been initiated.
 
 ```js
 dialog.isOpen;
@@ -163,7 +190,7 @@ const { dialog, main } = dialog.elements;
 Emitted when the dialog opens.
 
 ```js
-dialog.on('open', listener);
+dialog.on('dialog:open', listener);
 ```
 
 ### close
@@ -171,36 +198,36 @@ dialog.on('open', listener);
 Emitted when the dialog closes.
 
 ```js
-dialog.on('close', listener);
+dialog.on('dialog:close', listener);
 ```
 
 ### create
 
 ```js
-dialog.on('create', listener);
+dialog.on('dialog:create', listener);
 ```
 
 Emitted after the dialog is created.
 
-Note in order to listen for the initial create event the dialog must be manually created via the `create()` method.
-
-```js
-const dialog = dialog(dialog, main, {
-	autoInit: false
-});
-
-dialog.on('create', () => console.log('Dialog created'));
-
-dialog.create();
-```
-
 ### destroy
 
 ```js
-dialog.on('destroy', listener);
+dialog.on('dialog:destroy', listener);
 ```
 
 Emitted after the dialog is destroyed.
+
+## Browser Support
+
+Requires the following API's:
+
+- CustomEvent
+- Array.from
+- Array.prototype.some
+- Array.prototype.filter
+- Element.prototype.classList
+- Element.prototype.matches
+- Element​.query​Selector() / Element​.query​SelectorAll()
 
 ## License
 
