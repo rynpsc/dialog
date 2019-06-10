@@ -6,6 +6,7 @@
 
 - Added basic data attribute API.
 - Added ability to cancel opening and closing via `event.preventDefault`.
+- Added `initiated` property to dialog instance.
 
 ### Changed
 
@@ -16,6 +17,7 @@
 ### Removed
 
 - Removed `autoInit` option, dialogs must now be manually created with `create()`.
+- Removed `focus` option, autofocus element should now be defined using the `data-dialog-autofocus` attribute.
 
 ## v2.1.0 - 2017-12-10
 
