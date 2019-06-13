@@ -1,5 +1,6 @@
+import { focusTrap } from '@rynpsc/focus-trap';
 import defaults from './defaults';
-import focusTrap from './focus-trap';
+
 export { domapi } from  './dom-api';
 
 export const instances = {};
