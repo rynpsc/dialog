@@ -24,7 +24,7 @@
     "prepare": "npm run -s build"
   },
   "dependencies": {
-    "@rynpsc/focus-trap": "^1.0.0"
+    "@rynpsc/focus-trap": "^1.0.1"
   },
   "devDependencies": {
     "microbundle": "^0.11.0",
