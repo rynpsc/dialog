@@ -16,6 +16,7 @@
 
 ### Removed
 
+- Removed `main` parameter from constructor.
 - Removed `autoInit` option, dialogs must now be manually created with `create()`.
 - Removed `focus` option, autofocus element should now be defined using the `data-dialog-autofocus` attribute.
 

@@ -26,21 +26,19 @@ export function getInstanceById(id) {
 /**
  * @constructor
  * @param {string} dialog - ID of the HTMLElement.
- * @param {string} main - ID of the HTMLElement.
  * @param {Object} options - Options object.
  * @returns {Object|null}
  */
-export function dialog(dialog, main, options) {
+export function dialog(dialog, options) {
 	let isOpen = false;
 	let initiated = false;
 
 	const elements = {
 		triggeringElement: undefined,
-		main: document.getElementById(main),
 		dialog: document.getElementById(dialog),
 	};
 
-	if (!elements.dialog || !elements.main) {
+	if (!elements.dialog) {
 		return null;
 	}
 
