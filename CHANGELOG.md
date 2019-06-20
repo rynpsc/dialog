@@ -10,6 +10,7 @@
 
 ### Changed
 
+- Now uses `aria-modal="true"` and aligns with [WAI-ARIA Authoring Practices 1.1](https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal).
 - Events now use the native CustomEvent API.
 - Event names are now prefixed with `dialog:`.
 - No longer provides a default export, use `import { dialog } from @rynpsc/dialog` instead.
