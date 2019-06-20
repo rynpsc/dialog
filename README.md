@@ -6,10 +6,8 @@ Dialog provides a bare bones baseline for building accessible modals or modal li
 
 ## Install
 
-### npm
-
 ```
-npm install @rynpsc/dialog
+$ npm install @rynpsc/dialog
 ```
 
 ## Usage
@@ -54,11 +52,11 @@ if (dialog) {
 
 ```css
 .dialog {
-  display: none;
+  visibility: hidden;
 }
 
 .dialog.is-open {
-  display: block;
+  visibility: visible;
 }
 ```
 
@@ -66,7 +64,14 @@ if (dialog) {
 
 ### Autofocus
 
-On opening the dialog focus should be set to an element inside it. This can be set by adding the `data-dialog-autofocus` attribute to the desired element. If this attribute isn't present focus will be directed to the first focusable element.
+By default focus will be set to the first focusable element inside the `dialog` element when calling `open()`. Focus can be set to a specific element by adding the `data-dialog-autofocus` attribute to the desired element.
+
+```html
+<div id="dialog">
+  <button>Cancel</button>
+  <button data-dialog-autofocus>Confirm</button>
+</button>
+```
 
 ### Data Attribute API
 
@@ -103,7 +108,7 @@ const dialog = Dialog('dialog', 'main', {
 
 ## API
 
-### open(element)
+### .open(element)
 
 Open the dialog.
 
@@ -113,7 +118,7 @@ dialog.open(element);
 
 The optional `element` argument is the element focus will be returned to when closing the dialog, usually this is the element that triggered opening. For example when manually triggering the dialog with a button, `element` should be the button that triggered the element
 
-### close()
+### .close()
 
 Close the dialog.
 
@@ -121,7 +126,7 @@ Close the dialog.
 dialog.close();
 ```
 
-### toggle()
+### .toggle()
 
 Toggle the dialog between opened and closed.
 
@@ -131,7 +136,7 @@ dialog.toggle(force);
 
 If the optional `force` parameter evaluates to true, open the dialog, if false, close the dialog.
 
-### destroy()
+### .destroy()
 
 Destroy the dialog.
 
@@ -139,7 +144,7 @@ Destroy the dialog.
 dialog.destroy();
 ```
 
-### create()
+### .create()
 
 Create the dialog after destroying it.
 
@@ -147,7 +152,7 @@ Create the dialog after destroying it.
 dialog.create();
 ```
 
-### on(string, function)
+### .on(string, function)
 
 Subscribe to an event.
 
@@ -155,7 +160,7 @@ Subscribe to an event.
 dialog.on(event);
 ```
 
-### off(string, function)
+### .off(string, function)
 
 Unsubscribe to an event.
 
@@ -163,7 +168,7 @@ Unsubscribe to an event.
 dialog.off(event);
 ```
 
-### isOpen
+### .isOpen
 
 Returns a boolean indicating if the dialog is currently open.
 
@@ -171,7 +176,7 @@ Returns a boolean indicating if the dialog is currently open.
 dialog.isOpen;
 ```
 
-### initiated
+### .initiated
 
 Returns a boolean indicating if the dialy has been initiated.
 
@@ -179,7 +184,7 @@ Returns a boolean indicating if the dialy has been initiated.
 dialog.isOpen;
 ```
 
-### elements
+### .elements
 
 An object containing the dialog and main elements.
 
