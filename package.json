@@ -13,6 +13,7 @@
   "repository": "github:rynpsc/dialog",
   "license": "MIT",
   "files": [
+    "src",
     "dist"
   ],
   "main": "dist/dialog.js",
