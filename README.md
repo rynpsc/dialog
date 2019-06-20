@@ -81,11 +81,16 @@ import { domapi } from '@rynpsc/dialog';
 ```
 
 ```html
-<button data-dialog-open="main">Open Dialog</button>
-<button data-dialog-close="main">Close Dialog</button>
+
+<div id="dialog">
+  <!-- Dialog content -->
+</div>
+
+<button data-dialog-open="dialog">Open Dialog</button>
+<button data-dialog-close="dialog">Close Dialog</button>
 ```
 
-Where "main" is the ID of the dialog element.
+Where "dialog" is the ID of the dialog element.
 
 ## Options
 
@@ -107,7 +112,9 @@ const dialog = Dialog('dialog', 'main', {
 
 ## API
 
-### .open(element)
+### `dialog(string, object)`
+
+#### `.open(element)`
 
 Open the dialog.
 
@@ -115,9 +122,9 @@ Open the dialog.
 dialog.open(element);
 ```
 
-The optional `element` argument is the element focus will be returned to when closing the dialog, usually this is the element that triggered opening. For example when manually triggering the dialog with a button, `element` should be the button that triggered the element
+The optional `element` argument is the element focus will be returned to when closing the dialog, usually this is the element that triggered opening. For example when manually triggering the dialog with a button, `element` should be the button.
 
-### .close()
+#### `.close()`
 
 Close the dialog.
 
@@ -125,17 +132,17 @@ Close the dialog.
 dialog.close();
 ```
 
-### .toggle()
+#### `.toggle()`
 
 Toggle the dialog between opened and closed.
 
 ```js
-dialog.toggle(force);
+dialog.toggle();
 ```
 
 If the optional `force` parameter evaluates to true, open the dialog, if false, close the dialog.
 
-### .destroy()
+#### `.destroy()`
 
 Destroy the dialog.
 
@@ -143,7 +150,7 @@ Destroy the dialog.
 dialog.destroy();
 ```
 
-### .create()
+#### `.create()`
 
 Create the dialog after destroying it.
 
@@ -151,7 +158,7 @@ Create the dialog after destroying it.
 dialog.create();
 ```
 
-### .on(string, function)
+#### `.on(string, function)`
 
 Subscribe to an event.
 
@@ -159,7 +166,7 @@ Subscribe to an event.
 dialog.on(event);
 ```
 
-### .off(string, function)
+#### `.off(string, function)`
 
 Unsubscribe to an event.
 
@@ -167,7 +174,7 @@ Unsubscribe to an event.
 dialog.off(event);
 ```
 
-### .isOpen
+#### `.isOpen`
 
 Returns a boolean indicating if the dialog is currently open.
 
@@ -175,7 +182,7 @@ Returns a boolean indicating if the dialog is currently open.
 dialog.isOpen;
 ```
 
-### .initiated
+#### `.initiated`
 
 Returns a boolean indicating if the dialy has been initiated.
 
@@ -183,12 +190,26 @@ Returns a boolean indicating if the dialy has been initiated.
 dialog.isOpen;
 ```
 
-### .elements
+#### `.elements`
 
 An object containing the dialog and main elements.
 
 ```js
 const { dialog, main } = dialog.elements;
+```
+
+### `getInstanceById(string)`
+
+Gets a dialog instance with the given id.
+
+```js
+import { getInstanceById } from '@rynpsc/dialog';
+
+const instance = getInstanceById('dialog');
+
+if (instance) {
+  instance.open();
+}
 ```
 
 ## Events
@@ -233,7 +254,7 @@ Emitted after the dialog is destroyed.
 
 ### Cancelling events
 
-Some event can be cancelling by calling `event.preventDefault`.
+Some events can be canceled by calling `event.preventDefault`.
 
 ```js
 dialog.on('dialog:cancel', function(event) {
