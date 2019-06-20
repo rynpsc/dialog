@@ -17,8 +17,8 @@
     "dist"
   ],
   "main": "dist/dialog.js",
-  "module": "dist/dialog.mjs",
   "unpkg": "dist/dialog.umd.js",
+  "module": "dist/dialog.mjs",
   "scripts": {
     "build": "rimraf dist && microbundle build src/index.js --external none",
     "dev": "microbundle watch src/index.js --external none",
