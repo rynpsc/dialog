@@ -22,11 +22,9 @@ The `dialog` constructor takes two parameters:
 ```html
 <body>
   
-  <main>
-    <header></header>
-    <main></main>
-    <footer></footer>
-  </main>
+  <header></header>
+  <main></main>
+  <footer></footer>
 
   <div class="dialog" id="dialog">
     <!-- Dialog content -->
