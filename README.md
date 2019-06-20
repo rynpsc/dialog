@@ -95,7 +95,7 @@ Where "dialog" is the ID of the dialog element.
 ## Options
 
 ```js
-const dialog = Dialog('dialog', 'main', {
+{
   // ID of HTMLElement to use in aria-labelledby or a string to use as the aria-label.
   label: 'Dialog',
   
@@ -107,7 +107,7 @@ const dialog = Dialog('dialog', 'main', {
 
   // The class applied to elements.dialog when open.
   openClass: 'is-open'
-});
+}
 ```
 
 ## API
