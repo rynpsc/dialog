@@ -2,6 +2,14 @@
 
 Dialog provides a bare bones baseline for building accessible modals or modal like UI elements such as fullscreen menus.
 
+## Features
+
+- Takes care of adding the correct aria roles and attributes.
+- Sends and traps focus within the dialog.
+- Provides an event API via CustomEvents.
+- Simple data attribute API for opening and closing.
+- Small, 1.5 KB (minified/gzipped).
+
 [View demo on CodePen](https://codepen.io/rynpsc/pen/YVVGdr)
 
 ## Install
@@ -110,9 +118,11 @@ Where "dialog" is the ID of the dialog element.
 
 ## API
 
-### `dialog(string, object)`
+### `dialog(id: string, options: Object)`
 
-#### `.open(element)`
+Creates a dialog instance.
+
+#### `.open(element: HTMLElement)`
 
 Open the dialog.
 
@@ -130,7 +140,7 @@ Close the dialog.
 dialog.close();
 ```
 
-#### `.toggle()`
+#### `.toggle(force: boolean)`
 
 Toggle the dialog between opened and closed.
 
@@ -182,7 +192,7 @@ dialog.isOpen;
 
 #### `.initiated`
 
-Returns a boolean indicating if the dialy has been initiated.
+Returns a boolean indicating if the dialog has been initiated.
 
 ```js
 dialog.isOpen;
@@ -194,6 +204,16 @@ An object containing the dialog and main elements.
 
 ```js
 const { dialog, main } = dialog.elements;
+```
+
+### `instances`
+
+Returns an object of all the dialog instances.
+
+```js
+import { instances } from '@rynpsc/dialog';
+
+console.table(instances);
 ```
 
 ### `getInstanceById(string)`
