@@ -22,7 +22,7 @@ $ npm install @rynpsc/dialog
 
 The `dialog` constructor takes two parameters:
 
-* `dialog` - The ID of the element used as the dialog
+* `id` - The ID of the element used as the dialog
 * `options` - Configuration Object ([see options](#options))
 
 ### HTML
@@ -34,7 +34,7 @@ The `dialog` constructor takes two parameters:
   <main></main>
   <footer></footer>
 
-  <div class="dialog" id="dialog">
+  <div class="dialog" id="my-dialog">
     <!-- Dialog content -->
   </div>
 
@@ -46,7 +46,7 @@ The `dialog` constructor takes two parameters:
 ```js
 import { dialog } from '@rynpsc/dialog';
 
-const dialog = dialog(dialog, options);
+const dialog = dialog('my-dialog', options);
 
 if (dialog) {
   dialog.create();
