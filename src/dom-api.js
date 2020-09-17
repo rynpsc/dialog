@@ -12,6 +12,7 @@ export function domapi() {
 
 		if (instance) {
 			instance.open(opener);
+			event.preventDefault();
 		}
 	}));
 
@@ -20,6 +21,7 @@ export function domapi() {
 
 		if (instance) {
 			instance.close();
+			event.preventDefault();
 		}
 	}));
 }
