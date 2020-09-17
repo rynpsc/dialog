@@ -130,15 +130,17 @@ Open the dialog.
 dialog.open(element);
 ```
 
-The optional `element` argument is the element focus will be returned to when closing the dialog, usually this is the element that triggered opening. For example when manually triggering the dialog with a button, `element` should be the button.
+The optional `element` argument is the element focus will be directed to when opening the dialog.
 
-#### `.close()`
+#### `.close(element: HTMLElement)`
 
 Close the dialog.
 
 ```js
 dialog.close();
 ```
+
+The optional `element` argument is the element focus will be directed to when closing the dialog. If not set uses the element that had focus when the dialog was opened.
 
 #### `.toggle(force: boolean)`
 
@@ -198,12 +200,12 @@ Returns a boolean indicating if the dialog has been initiated.
 dialog.isOpen;
 ```
 
-#### `.elements`
+#### `.element`
 
-An object containing the dialog and main elements.
+The HTMLElement matching the ID passed into the constructor.
 
 ```js
-const { dialog, main } = dialog.elements;
+dialog.element
 ```
 
 ### `instances`

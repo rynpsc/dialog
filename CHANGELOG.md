@@ -1,5 +1,21 @@
 # Changelog
 
+## 4.0.0 - 2020-09-17
+
+### Added
+
+- Added the `element` property.
+- Add the ability to set the focused element when calling `close()`.
+
+### Changed
+
+- The default browser action is now prevented when using the domapi.
+- The element passed into `open()` is now the element that gets focused on open.
+
+### Removed
+
+- Removed the `elements` property.
+
 ## 3.0.0 - 2019-06-08
 
 ### Added
