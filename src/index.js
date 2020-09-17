@@ -33,11 +33,9 @@ export function dialog(dialog, options) {
 	let isOpen = false;
 	let initiated = false;
 
-	const elements = {
-		dialog: document.getElementById(dialog),
-	};
+	let dialogElement = document.getElementById(dialog);
 
-	if (!elements.dialog) {
+	if (!dialogElement) {
 		return null;
 	}
 
@@ -48,7 +46,7 @@ export function dialog(dialog, options) {
 
 	const config = Object.assign({}, defaults, options);
 
-	const trap = FocusTrap(elements.dialog);
+	const trap = FocusTrap(dialogElement);
 
 	/**
 	 * @param {KeyboardEvent} event
@@ -64,19 +62,19 @@ export function dialog(dialog, options) {
 
 		let role = config.alert ? 'alertdialog' : 'dialog';
 
-		elements.dialog.setAttribute('tabindex', -1);
-		elements.dialog.setAttribute('role', role);
-		elements.dialog.setAttribute('aria-modal', true);
+		dialogElement.setAttribute('tabindex', -1);
+		dialogElement.setAttribute('role', role);
+		dialogElement.setAttribute('aria-modal', true);
 
 		if (config.label) {
 			let matchesID = document.getElementById(config.label);
 			let attribute = matchesID ? 'aria-labelledby' : 'aria-label';
 
-			elements.dialog.setAttribute(attribute, config.label);
+			dialogElement.setAttribute(attribute, config.label);
 		}
 
 		if (config.description && document.getElementById(config.description)) {
-			elements.dialog.setAttribute('aria-describedby', config.description);
+			dialogElement.setAttribute('aria-describedby', config.description);
 		}
 
 		initiated = true;
@@ -97,11 +95,11 @@ export function dialog(dialog, options) {
 		}
 
 		isOpen = true;
-		elements.dialog.classList.add(config.openClass);
+		dialogElement.classList.add(config.openClass);
 		document.addEventListener('keydown', onKeydown, true);
 
 		if (element === undefined) {
-			element = elements.dialog.querySelector('[data-dialog-autofocus]');
+			element = dialogElement.querySelector('[data-dialog-autofocus]');
 		}
 
 		trap.activate(element);
@@ -123,7 +121,7 @@ export function dialog(dialog, options) {
 
 		isOpen = false;
 		document.removeEventListener('keydown', onKeydown, true);
-		elements.dialog.classList.remove(config.openClass);
+		dialogElement.classList.remove(config.openClass);
 	}
 
 	/**
@@ -151,7 +149,7 @@ export function dialog(dialog, options) {
 
 		close();
 		initiated = false;
-		attributes.forEach(attr => elements.dialog.removeAttribute(attr));
+		attributes.forEach(attr => dialogElement.removeAttribute(attr));
 
 		dispatchEvent('destroy');
 	}
@@ -163,7 +161,7 @@ export function dialog(dialog, options) {
 	 * @param {function} handler
 	 */
 	function on(type, handler) {
-		elements.dialog.addEventListener(type, handler);
+		dialogElement.addEventListener(type, handler);
 	}
 
 	/**
@@ -173,7 +171,7 @@ export function dialog(dialog, options) {
 	 * @param {function} handler
 	 */
 	function off(type, handler) {
-		elements.dialog.removeEventListener(type, handler);
+		dialogElement.removeEventListener(type, handler);
 	}
 
 	/**
@@ -190,7 +188,7 @@ export function dialog(dialog, options) {
 			cancelable: true,
 		});
 
-		return elements.dialog.dispatchEvent(event);
+		return dialogElement.dispatchEvent(event);
 	}
 
 	const instance = {
@@ -203,7 +201,7 @@ export function dialog(dialog, options) {
 		create,
 		toggle,
 		destroy,
-		elements,
+		element: dialogElement,
 	};
 
 	return instances[dialog] = instance;
