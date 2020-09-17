@@ -1,4 +1,4 @@
-import { focusTrap } from '@rynpsc/focus-trap';
+import { FocusTrap } from '@rynpsc/focus-trap';
 import defaults from './defaults';
 
 export { domapi } from './dom-api';
@@ -34,7 +34,6 @@ export function dialog(dialog, options) {
 	let initiated = false;
 
 	const elements = {
-		triggeringElement: undefined,
 		dialog: document.getElementById(dialog),
 	};
 
@@ -49,7 +48,7 @@ export function dialog(dialog, options) {
 
 	const config = Object.assign({}, defaults, options);
 
-	const trap = focusTrap(elements.dialog);
+	const trap = FocusTrap(elements.dialog);
 
 	/**
 	 * @param {KeyboardEvent} event
@@ -86,7 +85,7 @@ export function dialog(dialog, options) {
 	}
 
 	/**
-	 * @param {HTMLElement} element - The element that triggered opening, focus is sent to this element when closing.
+	 * @param {HTMLElement} element - Element to set focus to.
 	 */
 	function open(element) {
 		if (isOpen || !initiated) {
@@ -97,18 +96,21 @@ export function dialog(dialog, options) {
 			return;
 		}
 
-		if (element instanceof HTMLElement) {
-			elements.triggeringElement = element;
-		}
-
 		isOpen = true;
 		elements.dialog.classList.add(config.openClass);
 		document.addEventListener('keydown', onKeydown, true);
 
-		trap.activate(elements.dialog.querySelector('[data-dialog-autofocus]'));
+		if (element === undefined) {
+			element = elements.dialog.querySelector('[data-dialog-autofocus]');
+		}
+
+		trap.activate(element);
 	}
 
-	function close() {
+	/**
+	 * @param {HTMLElement} element - Element to set focus to.
+	 */
+	function close(element) {
 		if (!isOpen || !initiated) {
 			return;
 		}
@@ -117,7 +119,7 @@ export function dialog(dialog, options) {
 			return;
 		}
 
-		trap.deactivate(elements.triggeringElement);
+		trap.deactivate(element);
 
 		isOpen = false;
 		document.removeEventListener('keydown', onKeydown, true);

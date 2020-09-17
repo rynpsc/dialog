@@ -11,7 +11,7 @@ export function domapi() {
 		const instance = getInstanceById(opener.dataset.dialogOpen);
 
 		if (instance) {
-			instance.open(opener);
+			instance.open();
 			event.preventDefault();
 		}
 	}));
