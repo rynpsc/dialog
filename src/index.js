@@ -62,15 +62,15 @@ export function dialog(dialog, options) {
 			return false;
 		}
 
-		const role = config.alert ? 'alertdialog' : 'dialog';
+		let role = config.alert ? 'alertdialog' : 'dialog';
 
 		elements.dialog.setAttribute('tabindex', -1);
 		elements.dialog.setAttribute('role', role);
 		elements.dialog.setAttribute('aria-modal', true);
 
 		if (config.label) {
-			const matchesID = document.getElementById(config.label);
-			const attribute = matchesID ? 'aria-labelledby' : 'aria-label';
+			let matchesID = document.getElementById(config.label);
+			let attribute = matchesID ? 'aria-labelledby' : 'aria-label';
 
 			elements.dialog.setAttribute(attribute, config.label);
 		}
@@ -140,7 +140,7 @@ export function dialog(dialog, options) {
 			return false;
 		}
 
-		const attributes = [
+		let attributes = [
 			'role',
 			'tabindex',
 			'aria-modal',
@@ -183,9 +183,9 @@ export function dialog(dialog, options) {
 	 * @returns {boolean} False if preventDefault() was called, true otherwise.
 	 */
 	function dispatchEvent(name) {
-		const prefixedName = `dialog:${name}`;
+		let prefixedName = `dialog:${name}`;
 
-		const event = new CustomEvent(prefixedName, {
+		let event = new CustomEvent(prefixedName, {
 			bubbles: true,
 			cancelable: true,
 		});
@@ -193,7 +193,18 @@ export function dialog(dialog, options) {
 		return elements.dialog.dispatchEvent(event);
 	}
 
-	const instance = { on, off, open, close, isOpen, initiated, create, toggle, destroy, elements };
+	const instance = {
+		on,
+		off,
+		open,
+		close,
+		isOpen,
+		initiated,
+		create,
+		toggle,
+		destroy,
+		elements,
+	};
 
 	return instances[dialog] = instance;
 }
