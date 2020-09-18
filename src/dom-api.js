@@ -1,27 +1,38 @@
 import { getInstanceById } from './index';
 
-/**
- * Simple data attribute API for controling a dialog instance.
- */
-export function domapi() {
-	const openers = Array.from(document.querySelectorAll('[data-dialog-open]'));
-	const closers = Array.from(document.querySelectorAll('[data-dialog-close]'));
+export let openers;
+export let closers;
 
-	openers.forEach(element => element.addEventListener('click', event => {
-		const instance = getInstanceById(element.dataset.dialogOpen);
+export function mount() {
+	openers = Array.from(document.querySelectorAll('[data-dialog-open]'));
+	closers = Array.from(document.querySelectorAll('[data-dialog-close]'));
 
-		if (instance) {
-			instance.open();
-			event.preventDefault();
-		}
-	}));
+	openers.forEach(element => element.addEventListener('click', open));
+	closers.forEach(element => element.addEventListener('click', close));
+};
 
-	closers.forEach(element => element.addEventListener('click', event => {
-		const instance = getInstanceById(element.dataset.dialogClose);
+export function unmount() {
+	openers = [];
+	closers = [];
 
-		if (instance) {
-			instance.close();
-			event.preventDefault();
-		}
-	}));
+	openers.forEach(element => element.removeEventListener('click', open));
+	closers.forEach(element => element.removeEventListener('click', close));
+}
+
+function open(event) {
+	let instance = getInstanceById(event.target.dataset.dialogOpen);
+
+	if (instance) {
+		instance.open();
+		event.preventDefault();
+	}
+}
+
+function close(event) {
+	let instance = getInstanceById(event.target.dataset.dialogClose);
+
+	if (instance) {
+		instance.close();
+		event.preventDefault();
+	}
 }
