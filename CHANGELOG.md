@@ -1,14 +1,17 @@
 # Changelog
 
-## 4.0.0 - 2020-09-17
+## 4.0.0 - 2020-09-18
 
 ### Added
 
 - Added the `element` property.
 - Add the ability to set the focused element when calling `close()`.
+- Added the ability to unmount the domapi.
+- Added ability to access the elements being watched by the domapi.
 
 ### Changed
 
+- The domapi now needs to be explicitly mounted.
 - The default browser action is now prevented when using the domapi.
 - The element passed into `open()` is now the element that gets focused on open.
 
