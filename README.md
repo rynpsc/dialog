@@ -274,7 +274,7 @@ Events are handled via the [CustomEvent API](https://developer.mozilla.org/en-US
 Emitted when the dialog opens.
 
 ```js
-dialog.on('dialog:open', listener);
+dialog.on('open', listener);
 ```
 
 This event can be cancelled, see [Cancelling events](#cancelling-events).
@@ -284,7 +284,7 @@ This event can be cancelled, see [Cancelling events](#cancelling-events).
 Emitted when the dialog closes.
 
 ```js
-dialog.on('dialog:close', listener);
+dialog.on('close', listener);
 ```
 
 This event can be cancelled, see [Cancelling events](#cancelling-events).
@@ -292,7 +292,7 @@ This event can be cancelled, see [Cancelling events](#cancelling-events).
 ### create
 
 ```js
-dialog.on('dialog:create', listener);
+dialog.on('create', listener);
 ```
 
 Emitted after the dialog is created.
@@ -300,17 +300,17 @@ Emitted after the dialog is created.
 ### destroy
 
 ```js
-dialog.on('dialog:destroy', listener);
+dialog.on('destroy', listener);
 ```
 
 Emitted after the dialog is destroyed.
 
 ### Cancelling events
 
-Some events can be canceled by calling `event.preventDefault`.
+The `open` and `close `events can be canceled by calling `event.preventDefault` in the event handler.
 
 ```js
-dialog.on('dialog:cancel', function(event) {
+dialog.on('cancel', function(event) {
   event.preventDefault();
 });
 ```

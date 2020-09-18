@@ -161,7 +161,7 @@ export function dialog(dialog, options) {
 	 * @param {function} handler
 	 */
 	function on(type, handler) {
-		dialogElement.addEventListener(type, handler);
+		dialogElement.addEventListener(`dialog:${type}`, handler);
 	}
 
 	/**
@@ -171,7 +171,7 @@ export function dialog(dialog, options) {
 	 * @param {function} handler
 	 */
 	function off(type, handler) {
-		dialogElement.removeEventListener(type, handler);
+		dialogElement.removeEventListener(`dialog:${type}`, handler);
 	}
 
 	/**

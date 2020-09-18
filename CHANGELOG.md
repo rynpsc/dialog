@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.1.0 - 2020-09-18
+
+### Changed
+
+- The 'dialog' prefix is no longer required when using the `on` and `off` methods.
+
 ## 4.0.0 - 2020-09-18
 
 ### Added
