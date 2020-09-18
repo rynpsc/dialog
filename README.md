@@ -77,61 +77,6 @@ By default focus will be set to the first focusable element inside the `dialog` 
   <button data-dialog-autofocus>Confirm</button>
 </button>
 ```
-
-### Data Attribute API
-
-This library contains an optional data attribute API that enables opening and closing a dialog instance.
-
-```js
-import { domapi } from '@rynpsc/dialog';
-
-domapi.mount()
-```
-
-```html
-
-<div id="dialog">
-  <!-- Dialog content -->
-</div>
-
-<button data-dialog-open="dialog">Open Dialog</button>
-<button data-dialog-close="dialog">Close Dialog</button>
-```
-
-Where "dialog" is the ID of the dialog element.
-
-#### `.mount()`
-
-Get and add event listeners to elements with data attributes.
-
-```js
-domapi.mount();
-```
-
-#### `.unmount()`
-
-Remove event listeners from elements.
-
-```js
-domapi.unmount();
-```
-
-#### `.openers`
-
-Get elements that will trigger open.
-
-```js
-domapi.openers;
-```
-
-#### `.closers`
-
-Get elements that will trigger close.
-
-```js
-domapi.closers;
-```
-
 ## Options
 
 ```js
@@ -264,6 +209,60 @@ const instance = getInstanceById('dialog');
 if (instance) {
   instance.open();
 }
+```
+
+### Data Attribute API
+
+This library contains an optional data attribute API that enables opening and closing a dialog instance.
+
+```js
+import { domapi } from '@rynpsc/dialog';
+
+domapi.mount()
+```
+
+```html
+
+<div id="dialog">
+  <!-- Dialog content -->
+</div>
+
+<button data-dialog-open="dialog">Open Dialog</button>
+<button data-dialog-close="dialog">Close Dialog</button>
+```
+
+Where "dialog" is the ID of the dialog element.
+
+#### `.mount()`
+
+Get and add event listeners to elements with data attributes.
+
+```js
+domapi.mount();
+```
+
+#### `.unmount()`
+
+Remove event listeners from elements.
+
+```js
+domapi.unmount();
+```
+
+#### `.openers`
+
+Get elements that will trigger open.
+
+```js
+domapi.openers;
+```
+
+#### `.closers`
+
+Get elements that will trigger close.
+
+```js
+domapi.closers;
 ```
 
 ## Events
