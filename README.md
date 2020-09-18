@@ -84,6 +84,8 @@ This library contains an optional data attribute API that enables opening and cl
 
 ```js
 import { domapi } from '@rynpsc/dialog';
+
+domapi.mount()
 ```
 
 ```html
@@ -97,6 +99,38 @@ import { domapi } from '@rynpsc/dialog';
 ```
 
 Where "dialog" is the ID of the dialog element.
+
+#### `.mount()`
+
+Get and add event listeners to elements with data attributes.
+
+```js
+domapi.mount();
+```
+
+#### `.unmount()`
+
+Remove event listeners from elements.
+
+```js
+domapi.unmount();
+```
+
+#### `.openers`
+
+Get elements that will trigger open.
+
+```js
+domapi.openers;
+```
+
+#### `.closers`
+
+Get elements that will trigger close.
+
+```js
+domapi.closers;
+```
 
 ## Options
 
