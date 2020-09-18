@@ -310,7 +310,7 @@ Emitted after the dialog is destroyed.
 The `open` and `close `events can be canceled by calling `event.preventDefault` in the event handler.
 
 ```js
-dialog.on('cancel', function(event) {
+dialog.on('close', function(event) {
   event.preventDefault();
 });
 ```
