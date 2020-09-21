@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.1.1 - 2020-09-21
+
+### Fixed
+
+- Fixed issue with incorrect event target when using domapi.
+
 ## 4.1.0 - 2020-09-18
 
 ### Changed

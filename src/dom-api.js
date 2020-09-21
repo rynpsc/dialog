@@ -20,7 +20,7 @@ export function unmount() {
 }
 
 function open(event) {
-	let instance = getInstanceById(event.target.dataset.dialogOpen);
+	let instance = getInstanceById(event.currentTarget.dataset.dialogOpen);
 
 	if (instance) {
 		instance.open();
@@ -29,7 +29,7 @@ function open(event) {
 }
 
 function close(event) {
-	let instance = getInstanceById(event.target.dataset.dialogClose);
+	let instance = getInstanceById(event.currentTarget.dataset.dialogClose);
 
 	if (instance) {
 		instance.close();
