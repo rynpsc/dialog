@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.2.0 - 2020-10-28
+
+### Added
+
+- Added the `id` property to access the instances id.
+
 ## 4.1.1 - 2020-09-21
 
 ### Fixed

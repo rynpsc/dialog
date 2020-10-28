@@ -201,6 +201,7 @@ export function dialog(dialog, options) {
 		create,
 		toggle,
 		destroy,
+		id: dialog,
 		element: dialogElement,
 	};
 

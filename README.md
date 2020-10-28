@@ -179,6 +179,14 @@ Returns a boolean indicating if the dialog has been initiated.
 dialog.isOpen;
 ```
 
+#### `.id`
+
+The ID that was passed into the constructor.
+
+```js
+dialog.id
+```
+
 #### `.element`
 
 The HTMLElement matching the ID passed into the constructor.
