@@ -1,7 +1,7 @@
 import { getInstanceById } from './index';
 
-export let openers;
-export let closers;
+export let openers: HTMLElement[];
+export let closers: HTMLElement[];
 
 export function mount() {
 	openers = Array.from(document.querySelectorAll('[data-dialog-open]'));
@@ -19,8 +19,14 @@ export function unmount() {
 	closers.forEach(element => element.removeEventListener('click', close));
 }
 
-function open(event) {
-	let instance = getInstanceById(event.currentTarget.dataset.dialogOpen);
+function open(event: MouseEvent) {
+	let { currentTarget } = event;
+
+	if (!(currentTarget instanceof HTMLElement) || !currentTarget.dataset.dialogOpen) {
+		return;
+	}
+
+	let instance = getInstanceById(currentTarget.dataset.dialogOpen);
 
 	if (instance) {
 		instance.open();
@@ -28,8 +34,14 @@ function open(event) {
 	}
 }
 
-function close(event) {
-	let instance = getInstanceById(event.currentTarget.dataset.dialogClose);
+function close(event: MouseEvent) {
+	let { currentTarget } = event;
+
+	if (!(currentTarget instanceof HTMLElement) || !currentTarget.dataset.dialogClose) {
+		return;
+	}
+
+	let instance = getInstanceById(currentTarget.dataset.dialogClose);
 
 	if (instance) {
 		instance.close();
