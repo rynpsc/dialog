@@ -2,13 +2,15 @@
 
 Dialog provides a bare bones baseline for building accessible modals or modal like UI elements such as fullscreen menus.
 
+![npm version](https://img.shields.io/npm/v/@rynpsc/dialog)
+![npm bundle size (minified and gzipped)](https://img.shields.io/bundlephobia/minzip/@rynpsc/dialog?label=size)
+
 ## Features
 
 - Takes care of adding the correct aria roles and attributes.
 - Sends and traps focus within the dialog.
 - Provides an event API via CustomEvents.
 - Simple data attribute API for opening and closing.
-- Small, 1.5 KB (minified/gzipped).
 
 [View demo on CodePen](https://codepen.io/rynpsc/pen/YVVGdr)
 
@@ -67,15 +69,6 @@ if (dialog) {
 
 [For an example on how to animate the dialog see the CodePen demo](https://codepen.io/rynpsc/pen/YVVGdr).
 
-### Autofocus
-
-By default focus will be set to the first focusable element inside the `dialog` element when calling `open()`. Focus can be set to a specific element by adding the `data-dialog-autofocus` attribute to the desired element.
-
-```html
-<div id="dialog">
-  <button>Cancel</button>
-  <button data-dialog-autofocus>Confirm</button>
-</button>
 ```
 ## Options
 
@@ -90,6 +83,9 @@ By default focus will be set to the first focusable element inside the `dialog` 
   // Set dialog role to alertdialog.
   alert: false,
 
+  // Enable automatic focus management.
+  manageFocus: true,
+
   // The class applied to elements.dialog when open.
   openClass: 'is-open'
 }
@@ -97,31 +93,31 @@ By default focus will be set to the first focusable element inside the `dialog` 
 
 ## API
 
-### `dialog(id: string, options: Object)`
+### dialog(id: string, options: Object)
 
 Creates a dialog instance.
 
-#### `.open(element: HTMLElement)`
+#### .open(element: HTMLElement | undefined | null = undefined, scroll: boolean = true)
 
 Open the dialog.
+
+The optional `element` argument can be used to control the element that gets focused on opening. If `undefined` (the default) the first focusalbe element will be focused or the first element with the `data-dialog-autofocus` attribute. If `null` is passed, focus will not be redirected.
 
 ```js
 dialog.open(element);
 ```
 
-The optional `element` argument is the element focus will be directed to when opening the dialog.
-
-#### `.close(element: HTMLElement)`
+#### .close(element: HTMLElement | undefined | null = undefined, scroll: boolean = true)
 
 Close the dialog.
+
+The optional `element` argument can be used to control the element that gets focused on closing. If not set (`undefined`) the element that had focus before calling `open` will be focused. If `null` is passed, focus will not be redirected.
 
 ```js
 dialog.close();
 ```
 
-The optional `element` argument is the element focus will be directed to when closing the dialog. If not set uses the element that had focus when the dialog was opened.
-
-#### `.toggle(force: boolean)`
+#### .toggle(force: boolean)
 
 Toggle the dialog between opened and closed.
 
@@ -131,15 +127,7 @@ dialog.toggle();
 
 If the optional `force` parameter evaluates to true, open the dialog, if false, close the dialog.
 
-#### `.destroy()`
-
-Destroy the dialog.
-
-```js
-dialog.destroy();
-```
-
-#### `.create()`
+#### .create()
 
 Create the dialog after destroying it.
 
@@ -147,7 +135,15 @@ Create the dialog after destroying it.
 dialog.create();
 ```
 
-#### `.on(string, function)`
+#### .destroy()
+
+Destroy the dialog.
+
+```js
+dialog.destroy();
+```
+
+#### .on(string, function)
 
 Subscribe to an event.
 
@@ -155,7 +151,7 @@ Subscribe to an event.
 dialog.on(event);
 ```
 
-#### `.off(string, function)`
+#### .off(string, function)
 
 Unsubscribe to an event.
 
@@ -163,7 +159,7 @@ Unsubscribe to an event.
 dialog.off(event);
 ```
 
-#### `.isOpen`
+#### .isOpen
 
 Returns a boolean indicating if the dialog is currently open.
 
@@ -171,7 +167,7 @@ Returns a boolean indicating if the dialog is currently open.
 dialog.isOpen;
 ```
 
-#### `.initiated`
+#### .initiated
 
 Returns a boolean indicating if the dialog has been initiated.
 
@@ -179,7 +175,7 @@ Returns a boolean indicating if the dialog has been initiated.
 dialog.isOpen;
 ```
 
-#### `.id`
+#### .id
 
 The ID that was passed into the constructor.
 
@@ -187,7 +183,7 @@ The ID that was passed into the constructor.
 dialog.id
 ```
 
-#### `.element`
+#### .element
 
 The HTMLElement matching the ID passed into the constructor.
 
@@ -195,7 +191,7 @@ The HTMLElement matching the ID passed into the constructor.
 dialog.element
 ```
 
-### `instances`
+### instances
 
 Returns an object of all the dialog instances.
 
@@ -205,7 +201,7 @@ import { instances } from '@rynpsc/dialog';
 console.table(instances);
 ```
 
-### `getInstanceById(string)`
+### getInstanceById(string)
 
 Gets a dialog instance with the given id.
 
@@ -241,7 +237,7 @@ domapi.mount()
 
 Where "dialog" is the ID of the dialog element.
 
-#### `.mount()`
+#### .mount()
 
 Get and add event listeners to elements with data attributes.
 
@@ -249,7 +245,7 @@ Get and add event listeners to elements with data attributes.
 domapi.mount();
 ```
 
-#### `.unmount()`
+#### .unmount()
 
 Remove event listeners from elements.
 
@@ -257,7 +253,7 @@ Remove event listeners from elements.
 domapi.unmount();
 ```
 
-#### `.openers`
+#### .openers
 
 Get elements that will trigger open.
 
@@ -265,7 +261,7 @@ Get elements that will trigger open.
 domapi.openers;
 ```
 
-#### `.closers`
+#### .closers
 
 Get elements that will trigger close.
 
@@ -327,14 +323,16 @@ dialog.on('close', function(event) {
 
 Requires the following API's:
 
-- CustomEvent
 - Array.from
-- Array.prototype.some
 - Array.prototype.filter
-- Element.prototype.classList
-- Element.prototype.matches
-- Element​.query​Selector() / Element​.query​SelectorAll()
+- Array.prototype.some
+- CustomEvent
+- DOMTokenList.contains
+- Element.classList
+- Element.matches
+- Element.querySelectorAll
+- HTMLElement.dataset
 
 ## License
 
-MIT &copy; [Ryan Pascoe](https://github.com/rynpsc)
+MIT
