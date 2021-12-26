@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.1
+
+- Fixed event names in `on` and `off` methods
+
 ## 5.0.0
 
 - Added the `manageFocus` option

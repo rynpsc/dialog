@@ -1,7 +1,7 @@
 {
 	"name": "@rynpsc/dialog",
 	"description": "A modern, lightweight and accessible dialog with a focus on progressive enhancement",
-	"version": "5.0.0",
+	"version": "5.0.1",
 	"main": "dist/commonjs/dialog.js",
 	"module": "dist/module/dialog.js",
 	"unpkg": "dist/umd/dialog.js",
