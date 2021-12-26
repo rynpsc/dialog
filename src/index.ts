@@ -200,17 +200,19 @@ export function dialog(elementId: string, options: Partial<Options> = {}) {
 	}
 
 	function on<K extends keyof EventMap>(
-		type: K,
+		name: K,
 		listener: (this: HTMLElement, ev: EventMap[K]) => any
 	): void {
-		dialogElement.addEventListener(type, listener as EventListener);
+		let prefixedName = `dialog:${name}`;
+		dialogElement.addEventListener(prefixedName, listener as EventListener);
 	}
 
 	function off<K extends keyof EventMap>(
-		type: K,
+		name: K,
 		listener: (this: HTMLElement, ev: EventMap[K]) => any
 	): void {
-		dialogElement.removeEventListener(type, listener as EventListener);
+		let prefixedName = `dialog:${name}`;
+		dialogElement.removeEventListener(prefixedName, listener as EventListener);
 	}
 
 	function dispatchEvent(name: keyof EventMap) {
