@@ -234,7 +234,7 @@ export function dialog(elementId: string, options: Partial<Options> = {}) {
 		element: dialogElement,
 		id: elementId,
 		initiated,
-		isOpen,
+		get isOpen() { return isOpen },
 		off,
 		on,
 		open,
