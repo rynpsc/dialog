@@ -6,12 +6,12 @@
 
 ## 5.0.1
 
-- Fixed event names in `on` and `off` methods
+- Fixed event names in `on` and `off` methods.
 
 ## 5.0.0
 
-- Added the `manageFocus` option
-- Converted to TypeScript
+- Added the `manageFocus` option.
+- Converted to TypeScript.
 
 ## 4.2.0
 
@@ -61,4 +61,4 @@
 
 ## 1.0.0
 
-- Initial release
+- Initial release.
