@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.2
+
+- Fixed incorrect `isOpen` property.
+
 ## 5.0.1
 
 - Fixed event names in `on` and `off` methods
